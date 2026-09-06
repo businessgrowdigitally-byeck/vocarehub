@@ -10,33 +10,91 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BibliotecaRouteImport } from './routes/biblioteca'
+import { Route as FazerRouteImport } from './routes/fazer'
+import { Route as OportunidadesRouteImport } from './routes/oportunidades'
+import { Route as PensarRouteImport } from './routes/pensar'
+import { Route as SerRouteImport } from './routes/ser'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BibliotecaRoute = BibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FazerRoute = FazerRouteImport.update({
+  id: '/fazer',
+  path: '/fazer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OportunidadesRoute = OportunidadesRouteImport.update({
+  id: '/oportunidades',
+  path: '/oportunidades',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PensarRoute = PensarRouteImport.update({
+  id: '/pensar',
+  path: '/pensar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SerRoute = SerRouteImport.update({
+  id: '/ser',
+  path: '/ser',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/fazer': typeof FazerRoute
+  '/oportunidades': typeof OportunidadesRoute
+  '/pensar': typeof PensarRoute
+  '/ser': typeof SerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/fazer': typeof FazerRoute
+  '/oportunidades': typeof OportunidadesRoute
+  '/pensar': typeof PensarRoute
+  '/ser': typeof SerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/fazer': typeof FazerRoute
+  '/oportunidades': typeof OportunidadesRoute
+  '/pensar': typeof PensarRoute
+  '/ser': typeof SerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/biblioteca' | '/fazer' | '/oportunidades' | '/pensar' | '/ser'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/biblioteca' | '/fazer' | '/oportunidades' | '/pensar' | '/ser'
+  id:
+    | '__root__'
+    | '/'
+    | '/biblioteca'
+    | '/fazer'
+    | '/oportunidades'
+    | '/pensar'
+    | '/ser'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BibliotecaRoute: typeof BibliotecaRoute
+  FazerRoute: typeof FazerRoute
+  OportunidadesRoute: typeof OportunidadesRoute
+  PensarRoute: typeof PensarRoute
+  SerRoute: typeof SerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +106,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/biblioteca': {
+      id: '/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/biblioteca'
+      preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fazer': {
+      id: '/fazer'
+      path: '/fazer'
+      fullPath: '/fazer'
+      preLoaderRoute: typeof FazerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oportunidades': {
+      id: '/oportunidades'
+      path: '/oportunidades'
+      fullPath: '/oportunidades'
+      preLoaderRoute: typeof OportunidadesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pensar': {
+      id: '/pensar'
+      path: '/pensar'
+      fullPath: '/pensar'
+      preLoaderRoute: typeof PensarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ser': {
+      id: '/ser'
+      path: '/ser'
+      fullPath: '/ser'
+      preLoaderRoute: typeof SerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BibliotecaRoute: BibliotecaRoute,
+  FazerRoute: FazerRoute,
+  OportunidadesRoute: OportunidadesRoute,
+  PensarRoute: PensarRoute,
+  SerRoute: SerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
