@@ -48,7 +48,8 @@ export function NotionEmbed({ src, title, accent = "var(--solar)" }: Props) {
       </div>
 
       <div
-        className="relative overflow-hidden rounded-2xl bg-offwhite p-1.5 sm:p-2"
+        ref={boxRef}
+        className="relative h-[80vh] min-h-[520px] overflow-hidden rounded-2xl bg-offwhite p-1.5 sm:p-2 md:h-[736px]"
         style={{ boxShadow: `0 0 0 2px ${accent}` }}
       >
         {!loaded && (
@@ -62,13 +63,16 @@ export function NotionEmbed({ src, title, accent = "var(--solar)" }: Props) {
             </span>
           </div>
         )}
-        <iframe
-          src={src}
-          title={title}
-          onLoad={() => setLoaded(true)}
-          allowFullScreen
-          className="h-[80vh] min-h-[520px] w-full rounded-xl border-0 bg-offwhite md:h-[720px]"
-        />
+        {inView && (
+          <iframe
+            src={src}
+            title={title}
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+            allowFullScreen
+            className="h-full w-full rounded-xl border-0 bg-offwhite"
+          />
+        )}
       </div>
     </div>
   );
