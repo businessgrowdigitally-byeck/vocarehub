@@ -9,6 +9,8 @@ export const NOTION = {
 } as const;
 
 export const ALTUS_URL = "https://altus-life-os.vercel.app/en";
+export const ALTUS_DASHBOARD_URL = "https://altus-dashboard-gray.vercel.app/";
+export const ALTUS_EDU_CUPOM = "EDUCACIONALXBGD";
 
 export type PhaseKey = "ser" | "pensar" | "fazer";
 
