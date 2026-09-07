@@ -7,6 +7,7 @@ import {
   ALTUS_EDU_CUPOM,
 } from "@/lib/vocare";
 import { cn } from "@/lib/utils";
+import { logCouponRedemption } from "@/lib/coupon-log";
 
 type Step = "closed" | "choice" | "coupon" | "granted";
 
@@ -30,6 +31,7 @@ export function AltusBlock() {
     if (code === ALTUS_EDU_CUPOM) {
       setError(null);
       setStep("granted");
+      void logCouponRedemption(code);
       return;
     }
     setError("Cupom inválido. Confira com a sua escola.");

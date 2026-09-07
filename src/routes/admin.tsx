@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteFooter } from "@/components/SiteFooter";
-import { VoWordmark } from "@/components/brand/VoLogo";
+import { VoLogo } from "@/components/brand/VoLogo";
 
 const title = "Registro interno | VOcare";
 const description = "Área restrita do VOcare.";
@@ -73,7 +73,7 @@ function AdminPage() {
     <div className="min-h-screen bg-amazon text-offwhite">
       <header className="px-5 pt-8">
         <div className="mx-auto flex max-w-4xl items-center justify-between">
-          <VoWordmark className="h-6" />
+          <VoLogo className="h-7" />
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-offwhite/50">
             Interno
           </span>
