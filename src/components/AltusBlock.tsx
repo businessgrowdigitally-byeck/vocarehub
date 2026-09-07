@@ -154,7 +154,7 @@ export function AltusBlock() {
                         Tem cupom educacional?
                       </span>
                       <span className="block text-xs text-ink/60">
-                        Aluno(a) de escola pública estuda de graça.
+                        Aluno(a) de escola pública acessa o Altus de graça.
                       </span>
                     </span>
                     <ArrowRight className="h-4 w-4 shrink-0 text-ink/40 transition group-hover:translate-x-0.5 group-hover:text-terra" />
