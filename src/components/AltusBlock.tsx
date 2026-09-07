@@ -168,11 +168,11 @@ export function AltusBlock() {
               <div className="p-7 pt-8">
                 <p className="eyebrow text-terra">Cupom educacional</p>
                 <h3 className="mt-3 font-display text-3xl font-bold leading-[0.95]">
-                  Estude de graça
+                  Acesso gratuito ao Altus
                 </h3>
                 <p className="mt-3 text-sm text-ink/70">
-                  É aluno(a) de escola pública? Digite o cupom fornecido pela sua escola
-                  e libere o acesso gratuito ao Altus.
+                  Você é aluno(a) de escola pública? Digite o cupom fornecido pela sua
+                  escola para liberar o acesso gratuito ao seu sistema Altus Life OS.
                 </p>
 
                 <label className="mt-6 block">
@@ -190,7 +190,7 @@ export function AltusBlock() {
                     onKeyDown={(e) => {
                       if (e.key === "Enter") validate();
                     }}
-                    placeholder="EDUCACIONALXBGD"
+                    placeholder="Digite o seu cupom"
                     autoCapitalize="characters"
                     autoCorrect="off"
                     spellCheck={false}
