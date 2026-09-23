@@ -80,15 +80,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "VOcare — O chamado para o que vem depois." },
       {
         name: "description",
-        content:
-          "Portal gratuito de orientação vocacional para jovens de 15 a 18 anos.",
+        content: "Portal gratuito de orientação vocacional para jovens de 15 a 18 anos.",
       },
       { name: "author", content: "VOcare" },
       { property: "og:title", content: "VOcare — O chamado para o que vem depois." },
       {
         property: "og:description",
-        content:
-          "Portal gratuito de orientação vocacional para jovens de 15 a 18 anos.",
+        content: "Portal gratuito de orientação vocacional para jovens de 15 a 18 anos.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -121,6 +119,15 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDWLB64HKJ" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FDWLB64HKJ');`,
+          }}
+        />
       </head>
       <body>
         {children}
