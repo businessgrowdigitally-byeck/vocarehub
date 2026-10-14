@@ -12,9 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
+import { Route as EscolasRouteImport } from './routes/escolas'
 import { Route as FazerRouteImport } from './routes/fazer'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
 import { Route as PensarRouteImport } from './routes/pensar'
+import { Route as ResumoRouteImport } from './routes/resumo'
 import { Route as SerRouteImport } from './routes/ser'
 
 const IndexRoute = IndexRouteImport.update({
@@ -32,6 +34,11 @@ const BibliotecaRoute = BibliotecaRouteImport.update({
   path: '/biblioteca',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EscolasRoute = EscolasRouteImport.update({
+  id: '/escolas',
+  path: '/escolas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FazerRoute = FazerRouteImport.update({
   id: '/fazer',
   path: '/fazer',
@@ -47,6 +54,11 @@ const PensarRoute = PensarRouteImport.update({
   path: '/pensar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResumoRoute = ResumoRouteImport.update({
+  id: '/resumo',
+  path: '/resumo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SerRoute = SerRouteImport.update({
   id: '/ser',
   path: '/ser',
@@ -57,18 +69,22 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
+  '/resumo': typeof ResumoRoute
   '/ser': typeof SerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
+  '/resumo': typeof ResumoRoute
   '/ser': typeof SerRoute
 }
 export interface FileRoutesById {
@@ -76,9 +92,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
+  '/resumo': typeof ResumoRoute
   '/ser': typeof SerRoute
 }
 export interface FileRouteTypes {
@@ -87,27 +105,33 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/biblioteca'
+    | '/escolas'
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
+    | '/resumo'
     | '/ser'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
     | '/biblioteca'
+    | '/escolas'
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
+    | '/resumo'
     | '/ser'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/biblioteca'
+    | '/escolas'
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
+    | '/resumo'
     | '/ser'
   fileRoutesById: FileRoutesById
 }
@@ -115,9 +139,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   BibliotecaRoute: typeof BibliotecaRoute
+  EscolasRoute: typeof EscolasRoute
   FazerRoute: typeof FazerRoute
   OportunidadesRoute: typeof OportunidadesRoute
   PensarRoute: typeof PensarRoute
+  ResumoRoute: typeof ResumoRoute
   SerRoute: typeof SerRoute
 }
 
@@ -144,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BibliotecaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/escolas': {
+      id: '/escolas'
+      path: '/escolas'
+      fullPath: '/escolas'
+      preLoaderRoute: typeof EscolasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fazer': {
       id: '/fazer'
       path: '/fazer'
@@ -165,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PensarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resumo': {
+      id: '/resumo'
+      path: '/resumo'
+      fullPath: '/resumo'
+      preLoaderRoute: typeof ResumoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ser': {
       id: '/ser'
       path: '/ser'
@@ -179,9 +219,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   BibliotecaRoute: BibliotecaRoute,
+  EscolasRoute: EscolasRoute,
   FazerRoute: FazerRoute,
   OportunidadesRoute: OportunidadesRoute,
   PensarRoute: PensarRoute,
+  ResumoRoute: ResumoRoute,
   SerRoute: SerRoute,
 }
 export const routeTree = rootRouteImport

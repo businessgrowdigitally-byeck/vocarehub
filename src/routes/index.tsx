@@ -5,6 +5,9 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ArcCards } from "@/components/ArcCards";
 import { AltusBlock } from "@/components/AltusBlock";
+import { useJourney } from "@/hooks/use-journey";
+import { getOverallProgress } from "@/lib/journey/progress";
+import { PHASES } from "@/lib/vocare";
 import {
   IconProfissoes,
   IconCursos,
@@ -38,6 +41,10 @@ const TEMAS = [
 ];
 
 function Index() {
+  const { isHydrated, hasStarted, nextPhase, state } = useJourney();
+  const progress = getOverallProgress(state);
+  const phase = nextPhase ? PHASES[nextPhase] : null;
+
   return (
     <div className="min-h-screen bg-amazon">
       {/* HERO */}
@@ -71,17 +78,40 @@ function Index() {
               de um caminho.
             </h1>
             <p className="mt-4 max-w-md text-offwhite/80">
-              Explore conteúdos, cursos, oportunidades e ferramentas para construir o seu futuro —
-              e descobrir por onde começar.
+              Explore conteúdos, cursos, oportunidades e ferramentas para construir o seu futuro — e
+              descobrir por onde começar.
             </p>
-            <div className="mt-7">
-              <Link
-                to="/ser"
-                className="tap inline-flex items-center gap-2 rounded-full bg-solar px-7 py-3.5 font-display font-bold text-ink transition-transform hover:-translate-y-0.5"
-              >
-                Comece por você
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+            <div className="mt-7 flex flex-wrap items-center gap-4">
+              {isHydrated && hasStarted && phase === null ? (
+                <Link
+                  to="/resumo"
+                  className="tap inline-flex items-center gap-2 rounded-full bg-solar px-7 py-3.5 font-display font-bold text-ink transition-transform hover:-translate-y-0.5"
+                >
+                  Ver meu passaporte
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ) : isHydrated && hasStarted && phase ? (
+                <Link
+                  to={phase.path}
+                  className="tap inline-flex items-center gap-2 rounded-full bg-solar px-7 py-3.5 font-display font-bold text-ink transition-transform hover:-translate-y-0.5"
+                >
+                  Continuar {phase.name.toLowerCase()}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ) : (
+                <Link
+                  to="/ser"
+                  className="tap inline-flex items-center gap-2 rounded-full bg-solar px-7 py-3.5 font-display font-bold text-ink transition-transform hover:-translate-y-0.5"
+                >
+                  Comece por você
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
+              {isHydrated && hasStarted && (
+                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-offwhite/60">
+                  Jornada {progress}%
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -117,6 +147,13 @@ function Index() {
             O futuro não é uma <span className="text-solar">resposta</span>.
             <br />É uma possibilidade.
           </p>
+          <Link
+            to="/escolas"
+            className="tap mt-6 inline-flex items-center gap-2 text-sm font-display font-bold text-solar hover:underline"
+          >
+            Para escolas
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
