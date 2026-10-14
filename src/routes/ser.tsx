@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PhasePage } from "@/components/PhasePage";
 
-const title = "Ser — Olhe para dentro | VOcare";
+import { SerJourney } from "@/features/ser/SerJourney";
+
+const title = "SER — Olhe para dentro | VOcare";
 const description =
   "Fase 01 do arco VOcare: quem sou, o que gosto, o que valorizo. Autoconhecimento para jovens de 15 a 18 anos.";
 
@@ -14,5 +15,5 @@ export const Route = createFileRoute("/ser")({
       { property: "og:description", content: description },
     ],
   }),
-  component: () => <PhasePage phase="ser" />,
+  component: SerJourney,
 });
