@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
+import { Route as EscolasRouteImport } from './routes/escolas'
 import { Route as FazerRouteImport } from './routes/fazer'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
 import { Route as PensarRouteImport } from './routes/pensar'
@@ -31,6 +32,11 @@ const AdminRoute = AdminRouteImport.update({
 const BibliotecaRoute = BibliotecaRouteImport.update({
   id: '/biblioteca',
   path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EscolasRoute = EscolasRouteImport.update({
+  id: '/escolas',
+  path: '/escolas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FazerRoute = FazerRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/biblioteca'
+    | '/escolas'
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/biblioteca'
+    | '/escolas'
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/biblioteca'
+    | '/escolas'
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   BibliotecaRoute: typeof BibliotecaRoute
+  EscolasRoute: typeof EscolasRoute
   FazerRoute: typeof FazerRoute
   OportunidadesRoute: typeof OportunidadesRoute
   PensarRoute: typeof PensarRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/biblioteca'
       fullPath: '/biblioteca'
       preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/escolas': {
+      id: '/escolas'
+      path: '/escolas'
+      fullPath: '/escolas'
+      preLoaderRoute: typeof EscolasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fazer': {
@@ -199,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   BibliotecaRoute: BibliotecaRoute,
+  EscolasRoute: EscolasRoute,
   FazerRoute: FazerRoute,
   OportunidadesRoute: OportunidadesRoute,
   PensarRoute: PensarRoute,
