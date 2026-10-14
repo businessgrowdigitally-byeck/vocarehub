@@ -1,13 +1,3 @@
-export const NOTION = {
-  biblioteca:
-    "https://thinkable-whip-d06.notion.site/ebd//d0ed8a7ee2814bd1b55d8b0b931c5a86?v=6133f4685318408d91c56eca78ac86c1",
-  oportunidades: "https://thinkable-whip-d06.notion.site/ebd//3d3c2d7e1ecf80f28357c851eaa3d4bc",
-} as const;
-
-export const ALTUS_URL = "https://altus-life-os.vercel.app/en";
-export const ALTUS_DASHBOARD_URL = "https://altus-dashboard-gray.vercel.app/";
-export const ALTUS_EDU_CUPOM = "EDUCACIONALXBGD";
-
 export type PhaseKey = "ser" | "pensar" | "fazer";
 
 export const PHASES: Record<

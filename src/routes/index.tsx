@@ -4,7 +4,6 @@ import heroImg from "@/assets/hero-youth.jpg";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ArcCards } from "@/components/ArcCards";
-import { AltusBlock } from "@/components/AltusBlock";
 import { useJourney } from "@/hooks/use-journey";
 import { getOverallProgress } from "@/lib/journey/progress";
 import { PHASES } from "@/lib/vocare";
@@ -33,11 +32,11 @@ export const Route = createFileRoute("/")({
 });
 
 const TEMAS = [
-  { label: "Profissões", Icon: IconProfissoes, to: "/biblioteca" as const },
-  { label: "Cursos gratuitos", Icon: IconCursos, to: "/biblioteca" as const },
+  { label: "Leituras", Icon: IconConhecimento, to: "/biblioteca" as const },
+  { label: "Aprender", Icon: IconCursos, to: "/biblioteca" as const },
+  { label: "Explorar carreiras", Icon: IconProfissoes, to: "/biblioteca" as const },
+  { label: "Dinheiro & vida adulta", Icon: IconDinheiro, to: "/biblioteca" as const },
   { label: "Oportunidades", Icon: IconOportunidades, to: "/oportunidades" as const },
-  { label: "Dinheiro & trabalho", Icon: IconDinheiro, to: "/biblioteca" as const },
-  { label: "Conhecimento", Icon: IconConhecimento, to: "/biblioteca" as const },
 ];
 
 function Index() {
@@ -157,7 +156,6 @@ function Index() {
         </div>
       </section>
 
-      <AltusBlock />
       <SiteFooter />
     </div>
   );
