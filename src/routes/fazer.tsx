@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PhasePage } from "@/components/PhasePage";
+
+import { FazerJourney } from "@/features/fazer/FazerJourney";
 
 const title = "Fazer — Olhe para frente | VOcare";
 const description =
-  "Fase 03 do arco VOcare: qual é o primeiro passo, onde experimentar, por onde começar.";
+  "Fase 03 do arco VOcare: escolha um caminho, defina uma missão e marque seu primeiro passo.";
 
 export const Route = createFileRoute("/fazer")({
   head: () => ({
@@ -14,5 +15,5 @@ export const Route = createFileRoute("/fazer")({
       { property: "og:description", content: description },
     ],
   }),
-  component: () => <PhasePage phase="fazer" />,
+  component: FazerJourney,
 });
