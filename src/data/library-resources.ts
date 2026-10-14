@@ -48,7 +48,7 @@ export const CURATED_BOOKS: readonly CuratedBook[] = [
       "Aplica princípios de design para experimentar possibilidades antes de escolher um único caminho.",
     whyHere: "Ensina a testar hipóteses de vida na prática em vez de esperar a resposta certa.",
     tags: ["Carreira", "Experimentos", "Autoconhecimento"],
-    href: bookSearch("Design da sua vida", "Bill Burnett Dave Evans"),
+    href: "https://rocco.com.br/produto/o-design-da-sua-vida/",
   },
   {
     id: "generalistas-vencem",
@@ -70,7 +70,7 @@ export const CURATED_BOOKS: readonly CuratedBook[] = [
       "Técnicas de estudo baseadas em como o cérebro aprende, escritas para estudantes do ensino médio.",
     whyHere: "Transforma o estudo em método, o que serve para qualquer caminho escolhido.",
     tags: ["Estudo", "Método", "Foco"],
-    href: bookSearch("Aprendendo a aprender", "Barbara Oakley"),
+    href: "https://www.record.com.br/products/aprendendo-a-aprender-para-criancas-e-adolescentes/",
   },
   {
     id: "habitos-atomicos",
@@ -81,7 +81,7 @@ export const CURATED_BOOKS: readonly CuratedBook[] = [
       "Explica como pequenas mudanças de rotina se acumulam em resultados ao longo do tempo.",
     whyHere: "Constância é o que sustenta qualquer plano — aqui estão as bases práticas.",
     tags: ["Hábitos", "Rotina", "Constância"],
-    href: bookSearch("Hábitos atômicos", "James Clear"),
+    href: "https://altabooks.com.br/produto/habitos-atomicos/",
   },
   {
     id: "psicologia-financeira",
@@ -92,7 +92,7 @@ export const CURATED_BOOKS: readonly CuratedBook[] = [
       "Ensina como comportamento e decisões do dia a dia pesam mais no dinheiro do que planilhas complexas.",
     whyHere: "Prepara para lidar com dinheiro antes de ter os primeiros ganhos.",
     tags: ["Dinheiro", "Decisões", "Vida adulta"],
-    href: bookSearch("A psicologia financeira", "Morgan Housel"),
+    href: "https://harpercollins.com.br/products/a-psicologia-financeira-morgan-housel",
   },
   {
     id: "perigo-historia-unica",
@@ -103,7 +103,7 @@ export const CURATED_BOOKS: readonly CuratedBook[] = [
       "Mostra como uma visão única sobre pessoas e lugares limita o que conseguimos enxergar.",
     whyHere: "Abre a cabeça para caminhos e mundos que não aparecem no óbvio.",
     tags: ["Mundo", "Pertencimento", "Perspectiva"],
-    href: bookSearch("O perigo de uma história única", "Chimamanda Ngozi Adichie"),
+    href: "https://www.companhiadasletras.com.br/livro/9788535932539/o-perigo-de-uma-historia-unica",
   },
   {
     id: "ideias-adiar-fim-mundo",
@@ -114,7 +114,7 @@ export const CURATED_BOOKS: readonly CuratedBook[] = [
       "Reflete sobre a relação entre humanidade, natureza e futuro a partir de uma voz indígena brasileira.",
     whyHere: "Convida a pensar o futuro coletivo, não só o individual.",
     tags: ["Brasil", "Futuro", "Coletivo"],
-    href: bookSearch("Ideias para adiar o fim do mundo", "Ailton Krenak"),
+    href: "https://www.companhiadasletras.com.br/livro/9788535933581/ideias-para-adiar-o-fim-do-mundo-nova-edicao",
   },
   {
     id: "quarto-de-despejo",
@@ -125,7 +125,7 @@ export const CURATED_BOOKS: readonly CuratedBook[] = [
       "Diário de uma catadora de papel que se tornou um clássico sobre a vida nas periferias do Brasil.",
     whyHere: "Reconhece realidades brasileiras que costumam ficar fora das narrativas de sucesso.",
     tags: ["Brasil", "Realidade", "Literatura"],
-    href: bookSearch("Quarto de despejo", "Carolina Maria de Jesus"),
+    href: "https://carolinamariadejesus.ims.com.br/quarto-de-despejo/",
   },
   {
     id: "factfulness",
@@ -136,7 +136,7 @@ export const CURATED_BOOKS: readonly CuratedBook[] = [
       "Mostra como nossos vieses distorcem a leitura do mundo e ensina a olhar para dados com calma.",
     whyHere: "Ajuda a tomar decisões com base em fatos, não em medo ou suposição.",
     tags: ["Dados", "Mundo", "Pensamento crítico"],
-    href: bookSearch("Factfulness", "Hans Rosling"),
+    href: "https://www.record.com.br/products/factfulness/",
   },
 ];
 

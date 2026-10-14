@@ -53,13 +53,13 @@ const LEARNING_AUTHORED: readonly OpportunitySource[] = [
   {
     id: "senac-psg",
     category: "learning",
-    title: "Programa Senac de Gratuidade (PSG)",
+    title: "Programa Senac de Gratuidade",
     description:
-      "Cursos gratuitos de formação profissional oferecidos para pessoas de baixa renda.",
-    note: "Elegibilidade, oferta e regras são definidas pelo Senac em cada unidade.",
-    tags: ["Cursos gratuitos", "Formação profissional", "Gratuidade"],
+      "O Programa Senac de Gratuidade oferece formação profissional por meio dos departamentos regionais do Senac em todo o Brasil.",
+    note: "Esta página institucional explica o programa em São Paulo, mas o PSG funciona por regionais em todo o país. Consulte o site do Senac do seu estado para verificar critérios, cursos e disponibilidade — não presumimos que existam vagas abertas.",
+    tags: ["Cursos", "Gratuito", "Formação profissional"],
     href: "https://www.sp.senac.br/programa-senac-de-gratuidade/",
-    cta: "Ver o programa",
+    cta: "Conhecer o programa ↗",
     sourceType: "institutional",
   },
 ];

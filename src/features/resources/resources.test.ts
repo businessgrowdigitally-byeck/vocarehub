@@ -21,7 +21,7 @@ const readSource = (relative: string) => readFileSync(resolve(here, relative), "
 
 const FORBIDDEN = [
   /aberto agora/,
-  /vagas? abertas?/,
+  /(?<!existam )vagas? abertas?/,
   /inscri[çc][õo]es abertas/,
   /prazo final/,
   /sal[aá]rio/,
