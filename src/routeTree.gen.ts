@@ -15,6 +15,7 @@ import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as FazerRouteImport } from './routes/fazer'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
 import { Route as PensarRouteImport } from './routes/pensar'
+import { Route as ResumoRouteImport } from './routes/resumo'
 import { Route as SerRouteImport } from './routes/ser'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,11 @@ const PensarRoute = PensarRouteImport.update({
   path: '/pensar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResumoRoute = ResumoRouteImport.update({
+  id: '/resumo',
+  path: '/resumo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SerRoute = SerRouteImport.update({
   id: '/ser',
   path: '/ser',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
+  '/resumo': typeof ResumoRoute
   '/ser': typeof SerRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
+  '/resumo': typeof ResumoRoute
   '/ser': typeof SerRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
   '/pensar': typeof PensarRoute
+  '/resumo': typeof ResumoRoute
   '/ser': typeof SerRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
+    | '/resumo'
     | '/ser'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
+    | '/resumo'
     | '/ser'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/fazer'
     | '/oportunidades'
     | '/pensar'
+    | '/resumo'
     | '/ser'
   fileRoutesById: FileRoutesById
 }
@@ -118,6 +130,7 @@ export interface RootRouteChildren {
   FazerRoute: typeof FazerRoute
   OportunidadesRoute: typeof OportunidadesRoute
   PensarRoute: typeof PensarRoute
+  ResumoRoute: typeof ResumoRoute
   SerRoute: typeof SerRoute
 }
 
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PensarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resumo': {
+      id: '/resumo'
+      path: '/resumo'
+      fullPath: '/resumo'
+      preLoaderRoute: typeof ResumoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ser': {
       id: '/ser'
       path: '/ser'
@@ -182,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   FazerRoute: FazerRoute,
   OportunidadesRoute: OportunidadesRoute,
   PensarRoute: PensarRoute,
+  ResumoRoute: ResumoRoute,
   SerRoute: SerRoute,
 }
 export const routeTree = rootRouteImport

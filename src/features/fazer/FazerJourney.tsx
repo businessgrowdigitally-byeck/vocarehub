@@ -167,6 +167,13 @@ export function FazerJourney() {
               </div>
 
               <div className="mt-7 flex flex-wrap items-center gap-3">
+                <Link
+                  to="/resumo"
+                  className="tap inline-flex items-center gap-2 rounded-full bg-solar px-6 py-3 font-display font-bold text-ink"
+                >
+                  Ver meu passaporte
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
                 <button
                   type="button"
                   onClick={() => updateFazer({ status: "in_progress" })}
@@ -174,12 +181,6 @@ export function FazerJourney() {
                 >
                   Editar plano
                 </button>
-                <Link
-                  to="/"
-                  className="tap rounded-full bg-solar px-6 py-3 font-display font-bold text-ink"
-                >
-                  Voltar ao início
-                </Link>
               </div>
             </div>
           ) : (
