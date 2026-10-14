@@ -90,8 +90,7 @@ function AdminPage() {
             <div className="rounded-2xl border border-offwhite/15 p-6">
               <h1 className="font-display text-2xl font-bold">Sem permissão</h1>
               <p className="mt-2 text-sm text-offwhite/70">
-                Esta conta não tem acesso ao registro. Entre com a conta de
-                administrador.
+                Esta conta não tem acesso ao registro. Entre com a conta de administrador.
               </p>
               <SignOutButton />
             </div>
@@ -116,9 +115,7 @@ function AdminPage() {
 
               <div className="mt-8 overflow-hidden rounded-2xl border border-offwhite/15">
                 {rows.length === 0 && (
-                  <p className="p-6 text-sm text-offwhite/60">
-                    Nenhum acesso registrado ainda.
-                  </p>
+                  <p className="p-6 text-sm text-offwhite/60">Nenhum acesso registrado ainda.</p>
                 )}
                 {rows.map((r) => (
                   <div
@@ -159,22 +156,13 @@ function SignOutButton() {
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState<"in" | "up">("in");
   const [msg, setMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const submit = async () => {
     setBusy(true);
     setMsg(null);
-    const fn =
-      mode === "in"
-        ? supabase.auth.signInWithPassword({ email, password })
-        : supabase.auth.signUp({
-            email,
-            password,
-            options: { emailRedirectTo: `${window.location.origin}/admin` },
-          });
-    const { error } = await fn;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (error) setMsg(error.message);
   };
@@ -182,9 +170,7 @@ function SignIn() {
   return (
     <div className="mx-auto max-w-sm rounded-2xl border border-offwhite/15 p-6">
       <h1 className="font-display text-2xl font-bold">Acesso restrito</h1>
-      <p className="mt-2 text-sm text-offwhite/60">
-        Entre para ver o registro de cupons.
-      </p>
+      <p className="mt-2 text-sm text-offwhite/60">Entre para ver o registro de cupons.</p>
 
       <label className="mt-6 block">
         <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-offwhite/50">
@@ -210,7 +196,7 @@ function SignIn() {
           onKeyDown={(e) => {
             if (e.key === "Enter") void submit();
           }}
-          autoComplete={mode === "in" ? "current-password" : "new-password"}
+          autoComplete="current-password"
           className="mt-2 w-full rounded-xl border border-offwhite/20 bg-offwhite/5 px-4 py-3 text-base outline-none focus:border-solar"
         />
       </label>
@@ -223,18 +209,7 @@ function SignIn() {
         onClick={() => void submit()}
         className="tap mt-5 w-full rounded-full bg-solar px-6 py-3.5 font-display font-bold text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
       >
-        {busy ? "…" : mode === "in" ? "Entrar" : "Criar conta"}
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          setMode(mode === "in" ? "up" : "in");
-          setMsg(null);
-        }}
-        className="tap mt-3 w-full text-center text-xs text-offwhite/50 underline underline-offset-4"
-      >
-        {mode === "in" ? "Criar a conta de administrador" : "Já tenho conta"}
+        {busy ? "…" : "Entrar"}
       </button>
     </div>
   );

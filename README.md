@@ -53,9 +53,9 @@ Fundo escuro (Deep Amazon/Black) predominante nas seções de abertura e institu
 Arquitetura do site
 
 / (Início)
-├── /ser        (Fase 01 — fundo Deep Amazon)
-├── /pensar     (Fase 02 — fundo Electric Cian)
-├── /fazer      (Fase 03 — fundo Solar)
+├── /ser (Fase 01 — fundo Deep Amazon)
+├── /pensar (Fase 02 — fundo Electric Cian)
+├── /fazer (Fase 03 — fundo Solar)
 ├── /biblioteca (Explorar por tema)
 ├── /oportunidades
 └── seção final → CTA para o Altus

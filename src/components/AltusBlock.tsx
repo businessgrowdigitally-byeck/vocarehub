@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { ArrowRight, X, Check, Ticket, Sparkles } from "lucide-react";
 import { VoSymbol } from "@/components/brand/VoLogo";
-import {
-  ALTUS_URL,
-  ALTUS_DASHBOARD_URL,
-  ALTUS_EDU_CUPOM,
-} from "@/lib/vocare";
+import { ALTUS_URL, ALTUS_DASHBOARD_URL, ALTUS_EDU_CUPOM } from "@/lib/vocare";
 import { cn } from "@/lib/utils";
 import { logCouponRedemption } from "@/lib/coupon-log";
 
@@ -173,8 +169,8 @@ export function AltusBlock() {
                   Acesso gratuito ao Altus
                 </h3>
                 <p className="mt-3 text-sm text-ink/70">
-                  Você é aluno(a) de escola pública? Digite o cupom fornecido pela sua
-                  escola para liberar o acesso gratuito ao seu sistema Altus Life OS.
+                  Você é aluno(a) de escola pública? Digite o cupom fornecido pela sua escola para
+                  liberar o acesso gratuito ao seu sistema Altus Life OS.
                 </p>
 
                 <label className="mt-6 block">
@@ -205,9 +201,7 @@ export function AltusBlock() {
                   />
                 </label>
 
-                {error && (
-                  <p className="mt-2 text-sm text-destructive">{error}</p>
-                )}
+                {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
 
                 <button
                   type="button"
@@ -238,8 +232,8 @@ export function AltusBlock() {
                   Bem-vindo(a) ao Altus
                 </h3>
                 <p className="mt-3 text-sm text-ink/70">
-                  Seu cupom educacional foi validado. Você tem acesso gratuito ao
-                  sistema de execução e constância.
+                  Seu cupom educacional foi validado. Você tem acesso gratuito ao sistema de
+                  execução e constância.
                 </p>
 
                 <div className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-amazon/5 px-4 py-3">

@@ -9,8 +9,7 @@ export async function logCouponRedemption(couponCode: string) {
     await supabase.from("coupon_redemptions").insert({
       coupon_code: couponCode,
       referrer: typeof document !== "undefined" ? document.referrer || null : null,
-      user_agent:
-        typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 400) : null,
+      user_agent: typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 400) : null,
     });
   } catch {
     // ignora

@@ -40,9 +40,7 @@ export function PhasePage({ phase }: { phase: PhaseKey }) {
           <h1 className="mt-4 font-display text-5xl font-bold leading-[0.95] sm:text-7xl">
             {p.name}
           </h1>
-          <p className="mt-3 font-mono text-xs uppercase tracking-[0.22em] opacity-70">
-            {p.title}
-          </p>
+          <p className="mt-3 font-mono text-xs uppercase tracking-[0.22em] opacity-70">{p.title}</p>
           <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-sm opacity-85">
             {p.questions.map((q) => (
               <li key={q}>{q}</li>
@@ -62,7 +60,11 @@ export function PhasePage({ phase }: { phase: PhaseKey }) {
                   style={{
                     border: `1px solid ${dark ? "rgba(11,11,11,0.35)" : "rgba(244,241,232,0.4)"}`,
                     backgroundColor:
-                      k === phase ? (dark ? "rgba(11,11,11,0.1)" : "rgba(244,241,232,0.12)") : "transparent",
+                      k === phase
+                        ? dark
+                          ? "rgba(11,11,11,0.1)"
+                          : "rgba(244,241,232,0.12)"
+                        : "transparent",
                   }}
                 >
                   {PHASES[k].num}

@@ -71,8 +71,8 @@ function Index() {
               de um caminho.
             </h1>
             <p className="mt-4 max-w-md text-offwhite/80">
-              Explore conteúdos, cursos, oportunidades e ferramentas para construir o seu futuro —
-              e descobrir por onde começar.
+              Explore conteúdos, cursos, oportunidades e ferramentas para construir o seu futuro — e
+              descobrir por onde começar.
             </p>
             <div className="mt-7">
               <Link
