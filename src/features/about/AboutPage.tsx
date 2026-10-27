@@ -430,6 +430,9 @@ export function AboutPage() {
                 As respostas da jornada ficam no próprio navegador do dispositivo. O VOcare não
                 exige uma conta para realizar SER, PENSAR e FAZER.
               </p>
+              <Link to="/privacidade" className="mt-4 inline-block underline underline-offset-4">
+                Ler a política de privacidade
+              </Link>
             </div>
             <div className="rounded-3xl border border-ink/15 bg-amazon/40 p-6 sm:p-8">
               <p className="eyebrow text-terra">Acesso</p>

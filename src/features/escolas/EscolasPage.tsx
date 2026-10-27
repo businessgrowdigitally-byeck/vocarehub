@@ -13,7 +13,7 @@ const REASONS = [
   {
     Icon: Lock,
     title: "Sem cadastro e sem dados pessoais",
-    text: "As respostas ficam no próprio dispositivo do estudante. Nada é enviado, nada é armazenado por nós.",
+    text: "As respostas ficam no próprio dispositivo do estudante e nunca são enviadas. Sem conta, sem cadastro.",
   },
   {
     Icon: Users,

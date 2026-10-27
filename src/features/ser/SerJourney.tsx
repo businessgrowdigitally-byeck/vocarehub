@@ -8,6 +8,7 @@ import { useJourney } from "@/hooks/use-journey";
 import { cn } from "@/lib/utils";
 import type { Preferences, SerPhaseUpdate } from "@/lib/journey/types";
 import {
+  INTEREST_ITEMS,
   INTEREST_PAGE_COUNT,
   INTEREST_SCALE_LABELS,
   getInterestItemPage,
@@ -326,6 +327,12 @@ export function SerJourney() {
                     Não precisa saber fazer nem pensar em profissão. Responda pelo quanto você
                     gostaria de experimentar.
                   </p>
+                  {interestPage === 0 && (
+                    <p className="mt-2 text-sm text-offwhite/70">
+                      São {INTEREST_ITEMS.length} perguntas rápidas, em {INTEREST_PAGE_COUNT} partes
+                      — leva uns 5 minutos.
+                    </p>
+                  )}
                   <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-offwhite/50">
                     Parte {interestPage + 1} de {INTEREST_PAGE_COUNT}
                   </p>

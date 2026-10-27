@@ -19,6 +19,10 @@ Código em `src/lib/exploration/`. Testes em `*.test.ts` na mesma pasta e em
    `status` (`ok`, `incomplete-profile`, `no-sourced-profiles`, `no-matches`). Não existe
    ranking alternativo: sem candidatos válidos, a lista fica vazia e a tela explica o motivo.
 
+6. **Explicação** (`explanation.ts`): cada sugestão mostra até 2 temas que estão entre os 3
+   mais fortes do estudante (com pelo menos 0,5, "Mais ou menos") e entre os 3 mais fortes da
+   profissão. Perfil plano não recebe explicação. Só descreve; não altera o ranking.
+
 ## Regras que não podem ser quebradas
 
 - Só os interesses definem a similaridade. Forças, valores e preferências do SER são

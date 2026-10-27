@@ -138,3 +138,15 @@ describe("passaporte em PDF", () => {
     assert.equal(bytes[0], 0x25);
   });
 });
+
+describe("Passaporte", () => {
+  it("mostra as preferências no cartão do SER, onde elas são respondidas", async () => {
+    const { readFileSync } = await import("node:fs");
+    const page = readFileSync("src/features/journey-summary/JourneySummary.tsx", "utf-8");
+    const ser = page.indexOf('eyebrow text-cian">SER');
+    const pensar = page.indexOf('eyebrow text-cian">PENSAR');
+    const prefs = page.indexOf("Preferências de trabalho");
+    assert.ok(ser !== -1 && pensar !== -1 && prefs !== -1);
+    assert.ok(prefs > ser && prefs < pensar, "preferências devem ficar no cartão do SER");
+  });
+});

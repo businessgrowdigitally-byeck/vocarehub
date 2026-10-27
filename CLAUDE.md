@@ -39,6 +39,13 @@ Variables). Eventos de funil, sem parâmetros nem dados pessoais: `ser_started`,
 partir das mudanças de status) e `passport_downloaded`. Nunca envie respostas, caminhos ou o
 nome do certificado — o público é menor de idade.
 
+## Privacidade e compartilhamento
+
+- `/privacidade` descreve exatamente o que o código coleta; ao mudar analytics ou dados,
+  atualize a página e a data. Contato: vocare.institucional@gmail.com (BGD Systems).
+- Imagem de compartilhamento: `public/og-image.png` (1200×630). A URL absoluta usa
+  `SITE_URL` em `src/routes/__root.tsx` — troque ao adotar domínio próprio.
+
 ## Comandos
 
 ```

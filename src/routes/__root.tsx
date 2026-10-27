@@ -15,6 +15,11 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { initAnalytics } from "../lib/analytics/analytics";
 import { AnalyticsConsentBanner } from "../components/AnalyticsConsent";
 
+// Prévias de link (WhatsApp, Instagram etc.) exigem URL absoluta. Troque ao usar domínio próprio.
+const SITE_URL = "https://vocarehub.vercel.app";
+const SHARE_IMAGE_URL = `${SITE_URL}/og-image.png`;
+const SHARE_IMAGE_ALT = "VOcare — O futuro não é uma resposta. É uma possibilidade.";
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -92,7 +97,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Portal gratuito de orientação vocacional para jovens de 15 a 18 anos.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "pt_BR" },
+      { property: "og:image", content: SHARE_IMAGE_URL },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: SHARE_IMAGE_ALT },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: SHARE_IMAGE_URL },
     ],
     links: [
       {
