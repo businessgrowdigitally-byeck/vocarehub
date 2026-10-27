@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import {
   ANALYTICS_CONSENT_KEY,
   clearConsent,
+  installGtag,
   isAnalyticsActive,
   readConsent,
   resolveAnalyticsEnabled,
@@ -93,5 +94,35 @@ describe("resolveAnalyticsEnabled", () => {
   it("valores desconhecidos seguem o padrão do ambiente", () => {
     assert.equal(resolveAnalyticsEnabled("sim", true), true);
     assert.equal(resolveAnalyticsEnabled("", false), false);
+  });
+});
+
+describe("installGtag", () => {
+  it("empilha comandos como objeto arguments, como o snippet oficial do Google", () => {
+    const target: { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void } = {};
+    installGtag(target);
+    target.gtag?.("config", "G-TESTE", { anonymize_ip: true });
+    target.gtag?.("event", "ser_started");
+    assert.equal(target.dataLayer?.length, 2);
+    for (const entry of target.dataLayer ?? []) {
+      // gtag.js ignora arrays comuns; só processa objetos Arguments.
+      assert.equal(Object.prototype.toString.call(entry), "[object Arguments]");
+      assert.equal(Array.isArray(entry), false);
+    }
+    assert.deepEqual(Array.from(target.dataLayer?.[1] as ArrayLike<unknown>), [
+      "event",
+      "ser_started",
+    ]);
+  });
+
+  it("reaproveita um dataLayer existente", () => {
+    const existing: unknown[] = ["antigo"];
+    const target: { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void } = {
+      dataLayer: existing,
+    };
+    installGtag(target);
+    target.gtag?.("js", new Date());
+    assert.equal(target.dataLayer, existing);
+    assert.equal(existing.length, 2);
   });
 });
