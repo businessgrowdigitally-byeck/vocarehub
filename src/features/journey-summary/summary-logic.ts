@@ -4,8 +4,8 @@ import type { CareerPath } from "../pensar/career-paths.ts";
 import { getCareerPath } from "../pensar/pensar-logic.ts";
 import type { Mission } from "../fazer/missions.ts";
 import { getMission } from "../fazer/missions.ts";
-import { getOptionLabel, getPreferenceSummary } from "../ser/ser-logic.ts";
-import { INTEREST_OPTIONS, STRENGTH_OPTIONS, VALUE_OPTIONS } from "../ser/ser-options.ts";
+import { getInterestSummary, getOptionLabel, getPreferenceSummary } from "../ser/ser-logic.ts";
+import { STRENGTH_OPTIONS, VALUE_OPTIONS } from "../ser/ser-options.ts";
 
 export type LabeledItem = {
   id: string;
@@ -43,12 +43,20 @@ function toLabeledItems(
   return ids.map((id) => ({ id, label: getOptionLabel(id, options) }));
 }
 
+/** Temas de interesse em destaque; num perfil equilibrado, um único item que diz isso. */
+function interestItems(state: JourneyState): LabeledItem[] {
+  const summary = getInterestSummary(state.ser.interestResponses);
+  if (!summary) return [];
+  if (summary.themes.length === 0) return [{ id: "balanced", label: "Interesses equilibrados" }];
+  return summary.themes.map((theme) => ({ id: theme.dimension, label: theme.label }));
+}
+
 export function buildJourneySummary(state: JourneyState): JourneySummary {
   const planPath = state.fazer.selectedPathId
     ? getCareerPath(state.fazer.selectedPathId)
     : undefined;
   return {
-    interests: toLabeledItems(state.ser.interests, INTEREST_OPTIONS),
+    interests: interestItems(state),
     strengths: toLabeledItems(state.ser.strengths, STRENGTH_OPTIONS),
     values: toLabeledItems(state.ser.values, VALUE_OPTIONS),
     preferences: getPreferenceSummary(state.ser.preferences),

@@ -1,7 +1,13 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
-import { createInitialJourneyState, isJourneyStateV1, updateJourneyPhase } from "./state.ts";
+import {
+  createInitialJourneyState,
+  isJourneyStateV1,
+  isJourneyStateV2,
+  migrateJourneyV1ToV2,
+  updateJourneyPhase,
+} from "./state.ts";
 import { createJourneyStorage } from "./storage.ts";
 import {
   getNextPhase,
@@ -9,8 +15,8 @@ import {
   getPhaseProgress,
   hasJourneyStarted,
 } from "./progress.ts";
-import { JOURNEY_STORAGE_KEY } from "./types.ts";
-import type { JourneyState } from "./types.ts";
+import { JOURNEY_STORAGE_KEY, JOURNEY_STORAGE_KEY_V1 } from "./types.ts";
+import type { JourneyState, JourneyStateV1 } from "./types.ts";
 
 function createMemoryStorage(): Storage {
   const map = new Map<string, string>();
@@ -39,9 +45,9 @@ function createMemoryStorage(): Storage {
 describe("createInitialJourneyState", () => {
   it("cria estado inicial vazio e válido", () => {
     const state = createInitialJourneyState();
-    assert.equal(state.version, 1);
+    assert.equal(state.version, 2);
     assert.equal(state.ser.status, "not_started");
-    assert.deepEqual(state.ser.interests, []);
+    assert.deepEqual(state.ser.interestResponses, {});
     assert.deepEqual(state.ser.strengths, []);
     assert.deepEqual(state.ser.values, []);
     assert.deepEqual(state.ser.preferences, {
@@ -61,28 +67,98 @@ describe("createInitialJourneyState", () => {
   });
 });
 
-describe("isJourneyStateV1", () => {
+function legacyState(): JourneyStateV1 {
+  return {
+    version: 1,
+    ser: {
+      status: "completed",
+      interests: ["create", "technology", "help-people"],
+      strengths: ["teamwork", "focus"],
+      values: ["autonomy", "learning", "impact"],
+      preferences: { social: 4, routine: 2, practical: 5, structure: 3 },
+    },
+    pensar: {
+      status: "completed",
+      exploredPathIds: ["data"],
+      savedPathIds: ["data", "nursing", "law"],
+      selectedPathIds: ["data", "nursing"],
+    },
+    fazer: {
+      status: "in_progress",
+      selectedPathId: "data",
+      missionId: null,
+      targetDate: null,
+    },
+  };
+}
+
+describe("isJourneyStateV2", () => {
   it("aceita o estado inicial", () => {
-    assert.equal(isJourneyStateV1(createInitialJourneyState()), true);
+    assert.equal(isJourneyStateV2(createInitialJourneyState()), true);
   });
 
   it("rejeita valores que não são objeto", () => {
-    assert.equal(isJourneyStateV1(null), false);
-    assert.equal(isJourneyStateV1("x"), false);
-    assert.equal(isJourneyStateV1(42), false);
+    assert.equal(isJourneyStateV2(null), false);
+    assert.equal(isJourneyStateV2("x"), false);
+    assert.equal(isJourneyStateV2(42), false);
   });
 
-  it("rejeita versão desconhecida", () => {
-    const state = { ...createInitialJourneyState(), version: 2 };
-    assert.equal(isJourneyStateV1(state), false);
+  it("rejeita outra versão, inclusive a v1", () => {
+    assert.equal(isJourneyStateV2({ ...createInitialJourneyState(), version: 3 }), false);
+    assert.equal(isJourneyStateV2(legacyState()), false);
   });
 
   it("rejeita campos ausentes ou malformados", () => {
     const base = createInitialJourneyState();
-    assert.equal(isJourneyStateV1({ ...base, ser: undefined }), false);
-    assert.equal(isJourneyStateV1({ ...base, ser: { ...base.ser, interests: "nada" } }), false);
-    assert.equal(isJourneyStateV1({ ...base, fazer: { ...base.fazer, missionId: 7 } }), false);
-    assert.equal(isJourneyStateV1({ ...base, ser: { ...base.ser, status: "onfire" } }), false);
+    const ser = (patch: object) => ({ ...base, ser: { ...base.ser, ...patch } });
+    assert.equal(isJourneyStateV2({ ...base, ser: undefined }), false);
+    assert.equal(isJourneyStateV2(ser({ interestResponses: [] })), false);
+    assert.equal(isJourneyStateV2(ser({ interestResponses: { r1: 6 } })), false);
+    assert.equal(isJourneyStateV2(ser({ interestResponses: { r1: "5" } })), false);
+    assert.equal(isJourneyStateV2({ ...base, fazer: { ...base.fazer, missionId: 7 } }), false);
+    assert.equal(isJourneyStateV2(ser({ status: "onfire" })), false);
+  });
+
+  it("aceita respostas válidas", () => {
+    const base = createInitialJourneyState();
+    const state = { ...base, ser: { ...base.ser, interestResponses: { r1: 1, c5: 5 } } };
+    assert.equal(isJourneyStateV2(state), true);
+  });
+});
+
+describe("isJourneyStateV1", () => {
+  it("reconhece o formato antigo e recusa o novo", () => {
+    assert.equal(isJourneyStateV1(legacyState()), true);
+    assert.equal(isJourneyStateV1(createInitialJourneyState()), false);
+    const broken = legacyState() as unknown as { ser: { interests: unknown } };
+    broken.ser.interests = "nada";
+    assert.equal(isJourneyStateV1(broken), false);
+  });
+});
+
+describe("migrateJourneyV1ToV2", () => {
+  it("mantém forças, valores, preferências, PENSAR e FAZER", () => {
+    const v1 = legacyState();
+    const v2 = migrateJourneyV1ToV2(v1);
+    assert.equal(isJourneyStateV2(v2), true);
+    assert.deepEqual(v2.ser.strengths, v1.ser.strengths);
+    assert.deepEqual(v2.ser.values, v1.ser.values);
+    assert.deepEqual(v2.ser.preferences, v1.ser.preferences);
+    assert.deepEqual(v2.pensar, v1.pensar);
+    assert.deepEqual(v2.fazer, v1.fazer);
+  });
+
+  it("não converte etiquetas antigas em respostas e reabre o SER", () => {
+    const v2 = migrateJourneyV1ToV2(legacyState());
+    assert.deepEqual(v2.ser.interestResponses, {});
+    assert.equal(v2.ser.status, "in_progress");
+    assert.equal("interests" in v2.ser, false);
+  });
+
+  it("um SER não iniciado continua não iniciado", () => {
+    const v1 = legacyState();
+    v1.ser.status = "not_started";
+    assert.equal(migrateJourneyV1ToV2(v1).ser.status, "not_started");
   });
 });
 
@@ -91,9 +167,9 @@ describe("updateJourneyPhase", () => {
     const initial = createInitialJourneyState();
     const next = updateJourneyPhase(initial, "ser", {
       status: "in_progress",
-      interests: ["create"],
+      interestResponses: { r1: 4 },
     });
-    assert.deepEqual(next.ser.interests, ["create"]);
+    assert.deepEqual(next.ser.interestResponses, { r1: 4 });
     assert.equal(next.ser.status, "in_progress");
     assert.deepEqual(next.pensar, initial.pensar);
     assert.deepEqual(next.fazer, initial.fazer);
@@ -125,7 +201,7 @@ describe("createJourneyStorage", () => {
     const storage = createJourneyStorage(createMemoryStorage());
     const state = updateJourneyPhase(createInitialJourneyState(), "ser", {
       status: "in_progress",
-      interests: ["create", "technology"],
+      interestResponses: { r1: 4, i1: 2 },
     });
     storage.save(state);
     assert.deepEqual(storage.load(), state);
@@ -140,12 +216,46 @@ describe("createJourneyStorage", () => {
 
   it("retorna estado inicial para versão desconhecida sem sobrescrever", () => {
     const memory = createMemoryStorage();
-    const foreign: JourneyState = { ...createInitialJourneyState(), version: 1 };
+    const foreign: JourneyState = createInitialJourneyState();
     const raw = JSON.stringify({ ...foreign, version: 99 });
     memory.setItem(JOURNEY_STORAGE_KEY, raw);
     const storage = createJourneyStorage(memory);
     assert.deepEqual(storage.load(), createInitialJourneyState());
     assert.equal(memory.getItem(JOURNEY_STORAGE_KEY), raw);
+  });
+
+  it("carrega dados v1 migrados sem apagar a chave v1", () => {
+    const memory = createMemoryStorage();
+    const raw = JSON.stringify(legacyState());
+    memory.setItem(JOURNEY_STORAGE_KEY_V1, raw);
+    const storage = createJourneyStorage(memory);
+    assert.deepEqual(storage.load(), migrateJourneyV1ToV2(legacyState()));
+    assert.equal(memory.getItem(JOURNEY_STORAGE_KEY_V1), raw);
+    assert.equal(memory.getItem(JOURNEY_STORAGE_KEY), null);
+  });
+
+  it("prefere a v2 quando as duas versões existem", () => {
+    const memory = createMemoryStorage();
+    memory.setItem(JOURNEY_STORAGE_KEY_V1, JSON.stringify(legacyState()));
+    const storage = createJourneyStorage(memory);
+    const state = updateJourneyPhase(createInitialJourneyState(), "ser", { status: "in_progress" });
+    storage.save(state);
+    assert.deepEqual(storage.load(), state);
+  });
+
+  it("ignora v1 inválida", () => {
+    const memory = createMemoryStorage();
+    memory.setItem(JOURNEY_STORAGE_KEY_V1, JSON.stringify({ version: 1, ser: {} }));
+    assert.deepEqual(createJourneyStorage(memory).load(), createInitialJourneyState());
+  });
+
+  it("reset também remove a v1, para o progresso antigo não voltar", () => {
+    const memory = createMemoryStorage();
+    memory.setItem(JOURNEY_STORAGE_KEY_V1, JSON.stringify(legacyState()));
+    const storage = createJourneyStorage(memory);
+    storage.reset();
+    assert.equal(memory.getItem(JOURNEY_STORAGE_KEY_V1), null);
+    assert.deepEqual(storage.load(), createInitialJourneyState());
   });
 
   it("reset remove a chave armazenada", () => {

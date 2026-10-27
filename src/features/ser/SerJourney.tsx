@@ -8,9 +8,12 @@ import { useJourney } from "@/hooks/use-journey";
 import { cn } from "@/lib/utils";
 import type { Preferences, SerPhaseUpdate } from "@/lib/journey/types";
 import {
-  INTEREST_MAX,
-  INTEREST_MIN,
-  INTEREST_OPTIONS,
+  INTEREST_PAGE_COUNT,
+  INTEREST_SCALE_LABELS,
+  getInterestItemPage,
+} from "@/lib/exploration/interest-items";
+import { isValidInterestAnswer } from "@/lib/exploration/scoring";
+import {
   PREFERENCE_SCALES,
   STRENGTH_MAX,
   STRENGTH_MIN,
@@ -23,10 +26,11 @@ import type { PreferenceKey, SerOption } from "./ser-options";
 import {
   arePreferencesValid,
   canCompleteSer,
+  getFirstUnansweredInterestPage,
+  getInterestSummary,
   getOptionLabel,
   getPreferenceSummary,
   getSerResumeStep,
-  isInterestSelectionValid,
   isStrengthSelectionValid,
   isValueSelectionValid,
 } from "./ser-logic";
@@ -128,11 +132,13 @@ function OptionGroup({
 export function SerJourney() {
   const { state, isHydrated, updateSer } = useJourney();
   const [step, setStep] = useState<number | null>(null);
+  const [interestPage, setInterestPage] = useState(0);
   const ser = state.ser;
 
   useEffect(() => {
     if (!isHydrated || step !== null) return;
     setStep(getSerResumeStep(state.ser));
+    setInterestPage(getFirstUnansweredInterestPage(state.ser.interestResponses));
     if (state.ser.status === "not_started") {
       updateSer({ status: "in_progress" });
     }
@@ -153,11 +159,24 @@ export function SerJourney() {
     setField({ preferences: { [key]: value } as Partial<Preferences> });
   };
 
+  const setInterestAnswer = (itemId: string, value: number) => {
+    setField({ interestResponses: { ...ser.interestResponses, [itemId]: value } });
+  };
+
+  const pageItems = getInterestItemPage(interestPage);
+  const isLastInterestPage = interestPage >= INTEREST_PAGE_COUNT - 1;
+  const interestSummary = getInterestSummary(ser.interestResponses);
+
+  const scrollToTop = () => {
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const displayStep = step ?? 1;
   const currentTitle = STEP_TITLES[displayStep - 1] ?? "";
 
   const isStepValid = (() => {
-    if (displayStep === 1) return isInterestSelectionValid(ser.interests);
+    if (displayStep === 1)
+      return pageItems.every((item) => isValidInterestAnswer(ser.interestResponses[item.id]));
     if (displayStep === 2) return isStrengthSelectionValid(ser.strengths);
     if (displayStep === 3) return isValueSelectionValid(ser.values);
     if (displayStep === 4) return arePreferencesValid(ser.preferences);
@@ -165,6 +184,11 @@ export function SerJourney() {
   })();
 
   const goNext = () => {
+    if (displayStep === 1 && !isLastInterestPage) {
+      setInterestPage(interestPage + 1);
+      scrollToTop();
+      return;
+    }
     if (displayStep === 4) {
       if (!canCompleteSer(ser)) return;
       updateSer({ status: "completed" });
@@ -174,10 +198,22 @@ export function SerJourney() {
     setStep(Math.min(TOTAL_STEPS, displayStep + 1));
   };
 
+  const goBack = () => {
+    if (displayStep === 1) {
+      setInterestPage(Math.max(0, interestPage - 1));
+      return;
+    }
+    if (displayStep === 2) setInterestPage(INTEREST_PAGE_COUNT - 1);
+    setStep(Math.max(1, displayStep - 1));
+  };
+
   const editAnswers = () => {
     updateSer({ status: "in_progress" });
+    setInterestPage(0);
     setStep(1);
   };
+
+  const canGoBack = displayStep > 1 || interestPage > 0;
 
   return (
     <div className="min-h-screen bg-amazon text-offwhite">
@@ -226,23 +262,52 @@ export function SerJourney() {
               {displayStep === 1 && (
                 <div>
                   <h2 className="font-display text-2xl font-bold">
-                    O que costuma despertar sua curiosidade?
+                    Quanto cada atividade chama sua atenção?
                   </h2>
                   <p className="mt-2 text-sm text-offwhite/70">
-                    Escolha as opções que mais chamam sua atenção. Não pense em profissão ainda.
+                    Não precisa saber fazer nem pensar em profissão. Responda pelo quanto você
+                    gostaria de experimentar.
                   </p>
                   <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-offwhite/50">
-                    {ser.interests.length} selecionados · escolha de {INTEREST_MIN} a {INTEREST_MAX}
+                    Parte {interestPage + 1} de {INTEREST_PAGE_COUNT}
                   </p>
-                  <OptionGroup
-                    options={INTEREST_OPTIONS}
-                    selected={ser.interests}
-                    max={INTEREST_MAX}
-                    onToggle={(id) =>
-                      setField({ interests: toggleId(ser.interests, id, INTEREST_MAX) })
-                    }
-                    ariaLabel="Interesses"
-                  />
+                  <ol className="mt-5 space-y-6">
+                    {pageItems.map((item) => {
+                      const value = ser.interestResponses[item.id];
+                      return (
+                        <li key={item.id}>
+                          <p className="text-offwhite/90">{item.text}</p>
+                          <div
+                            className="mt-3 grid grid-cols-5 gap-1.5 sm:gap-2"
+                            role="radiogroup"
+                            aria-label={item.text}
+                          >
+                            {INTEREST_SCALE_LABELS.map((label, index) => {
+                              const n = index + 1;
+                              const active = value === n;
+                              return (
+                                <button
+                                  key={label}
+                                  type="button"
+                                  role="radio"
+                                  aria-checked={active}
+                                  onClick={() => setInterestAnswer(item.id, n)}
+                                  className={cn(
+                                    "tap rounded-xl border px-1 py-2.5 text-[11px] leading-tight transition-colors sm:text-xs",
+                                    active
+                                      ? "border-solar bg-solar font-medium text-ink"
+                                      : "border-offwhite/20 text-offwhite/80 hover:border-solar/60",
+                                  )}
+                                >
+                                  {label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ol>
                 </div>
               )}
 
@@ -350,10 +415,26 @@ export function SerJourney() {
                   </p>
 
                   <div className="mt-8 space-y-7">
-                    <MapSection
-                      title="INTERESSES"
-                      items={ser.interests.map((id) => getOptionLabel(id, INTEREST_OPTIONS))}
-                    />
+                    <div>
+                      <p className="eyebrow text-solar">INTERESSES</p>
+                      {interestSummary ? (
+                        <>
+                          <p className="mt-3 text-sm text-offwhite/80">{interestSummary.message}</p>
+                          {interestSummary.themes.length > 0 && (
+                            <ul className="mt-3 space-y-2">
+                              {interestSummary.themes.map((theme) => (
+                                <li key={theme.dimension} className="text-sm">
+                                  <span className="font-medium text-offwhite">{theme.label}</span>
+                                  <span className="text-offwhite/65"> — {theme.description}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </>
+                      ) : (
+                        <p className="mt-3 text-sm text-offwhite/50">Ainda não respondido.</p>
+                      )}
+                    </div>
                     <MapSection
                       title="FORÇAS"
                       items={ser.strengths.map((id) => getOptionLabel(id, STRENGTH_OPTIONS))}
@@ -395,11 +476,11 @@ export function SerJourney() {
                 <div className="mt-8 flex items-center justify-between gap-3 border-t border-offwhite/10 pt-6">
                   <button
                     type="button"
-                    disabled={displayStep <= 1}
-                    onClick={() => setStep(Math.max(1, displayStep - 1))}
+                    disabled={!canGoBack}
+                    onClick={goBack}
                     className={cn(
                       "tap inline-flex items-center gap-2 rounded-full border border-offwhite/25 px-5 py-3 text-sm transition-colors hover:bg-offwhite/10",
-                      displayStep <= 1 && "cursor-not-allowed opacity-40 hover:bg-transparent",
+                      !canGoBack && "cursor-not-allowed opacity-40 hover:bg-transparent",
                     )}
                   >
                     <ArrowLeft className="h-4 w-4" />

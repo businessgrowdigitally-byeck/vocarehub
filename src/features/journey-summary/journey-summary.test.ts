@@ -1,6 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
+import { INTEREST_ITEMS } from "../../lib/exploration/interest-items.ts";
 import { createInitialJourneyState } from "../../lib/journey/state.ts";
 import type { JourneyState } from "../../lib/journey/types.ts";
 import { buildCertificatePdf, escapePdfText, latin1Bytes } from "./certificate.ts";
@@ -12,7 +13,10 @@ function completedState(): JourneyState {
     ...state,
     ser: {
       status: "completed",
-      interests: ["create", "technology"],
+      // Criar (A) se destaca: A=5, demais=2.
+      interestResponses: Object.fromEntries(
+        INTEREST_ITEMS.map((item) => [item.id, item.dimension === "A" ? 5 : 2]),
+      ),
       strengths: ["focus"],
       values: ["autonomy", "learning", "impact"],
       preferences: { social: 4, routine: 2, practical: 3, structure: 1 },
@@ -44,17 +48,33 @@ describe("isJourneyComplete", () => {
 });
 
 describe("buildJourneySummary", () => {
-  it("traduz IDs do SER em rótulos legíveis", () => {
+  it("traduz o SER em rótulos legíveis", () => {
     const summary = buildJourneySummary(completedState());
     assert.deepEqual(
       summary.interests.map((item) => item.label),
-      ["Criar", "Tecnologia"],
+      ["Criar"],
     );
     assert.deepEqual(
       summary.values.map((item) => item.label),
       ["Autonomia", "Aprendizado", "Impacto"],
     );
     assert.equal(summary.preferences.length, 4);
+  });
+
+  it("interesses incompletos ficam vazios; equilibrados viram um único item", () => {
+    const incomplete = completedState();
+    incomplete.ser = { ...incomplete.ser, interestResponses: {} };
+    assert.deepEqual(buildJourneySummary(incomplete).interests, []);
+
+    const balanced = completedState();
+    balanced.ser = {
+      ...balanced.ser,
+      interestResponses: Object.fromEntries(INTEREST_ITEMS.map((item) => [item.id, 3])),
+    };
+    assert.deepEqual(
+      buildJourneySummary(balanced).interests.map((item) => item.label),
+      ["Interesses equilibrados"],
+    );
   });
 
   it("reúne caminhos e o plano final", () => {
