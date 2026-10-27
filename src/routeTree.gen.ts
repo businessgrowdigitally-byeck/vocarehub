@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
+import { Route as ComoUsarRouteImport } from './routes/como-usar'
 import { Route as EscolasRouteImport } from './routes/escolas'
 import { Route as FazerRouteImport } from './routes/fazer'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
@@ -28,6 +29,11 @@ const IndexRoute = IndexRouteImport.update({
 const BibliotecaRoute = BibliotecaRouteImport.update({
   id: '/biblioteca',
   path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComoUsarRoute = ComoUsarRouteImport.update({
+  id: '/como-usar',
+  path: '/como-usar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EscolasRoute = EscolasRouteImport.update({
@@ -74,6 +80,7 @@ const SobreRoute = SobreRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/como-usar': typeof ComoUsarRoute
   '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/como-usar': typeof ComoUsarRoute
   '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/como-usar': typeof ComoUsarRoute
   '/escolas': typeof EscolasRoute
   '/fazer': typeof FazerRoute
   '/oportunidades': typeof OportunidadesRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/biblioteca'
+    | '/como-usar'
     | '/escolas'
     | '/fazer'
     | '/oportunidades'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/biblioteca'
+    | '/como-usar'
     | '/escolas'
     | '/fazer'
     | '/oportunidades'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/biblioteca'
+    | '/como-usar'
     | '/escolas'
     | '/fazer'
     | '/oportunidades'
@@ -150,6 +162,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BibliotecaRoute: typeof BibliotecaRoute
+  ComoUsarRoute: typeof ComoUsarRoute
   EscolasRoute: typeof EscolasRoute
   FazerRoute: typeof FazerRoute
   OportunidadesRoute: typeof OportunidadesRoute
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/biblioteca'
       fullPath: '/biblioteca'
       preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/como-usar': {
+      id: '/como-usar'
+      path: '/como-usar'
+      fullPath: '/como-usar'
+      preLoaderRoute: typeof ComoUsarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/escolas': {
@@ -238,6 +258,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BibliotecaRoute: BibliotecaRoute,
+  ComoUsarRoute: ComoUsarRoute,
   EscolasRoute: EscolasRoute,
   FazerRoute: FazerRoute,
   OportunidadesRoute: OportunidadesRoute,
