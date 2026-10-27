@@ -6,6 +6,7 @@ import {
   clearConsent,
   isAnalyticsActive,
   readConsent,
+  resolveAnalyticsEnabled,
   trackEvent,
   writeConsent,
 } from "./analytics.ts";
@@ -71,5 +72,26 @@ describe("isAnalyticsActive", () => {
 describe("trackEvent", () => {
   it("não lança sem ambiente de navegador", () => {
     assert.doesNotThrow(() => trackEvent("journey_started"));
+  });
+});
+
+describe("resolveAnalyticsEnabled", () => {
+  it("liga por padrão em produção e desliga em desenvolvimento", () => {
+    assert.equal(resolveAnalyticsEnabled(undefined, true), true);
+    assert.equal(resolveAnalyticsEnabled(undefined, false), false);
+  });
+
+  it("VITE_ENABLE_ANALYTICS=false desliga em qualquer ambiente", () => {
+    assert.equal(resolveAnalyticsEnabled("false", true), false);
+    assert.equal(resolveAnalyticsEnabled("false", false), false);
+  });
+
+  it("VITE_ENABLE_ANALYTICS=true liga também em desenvolvimento", () => {
+    assert.equal(resolveAnalyticsEnabled("true", false), true);
+  });
+
+  it("valores desconhecidos seguem o padrão do ambiente", () => {
+    assert.equal(resolveAnalyticsEnabled("sim", true), true);
+    assert.equal(resolveAnalyticsEnabled("", false), false);
   });
 });

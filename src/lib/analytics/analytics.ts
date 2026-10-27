@@ -53,8 +53,24 @@ export function clearConsent(storage?: Storage | null): void {
   }
 }
 
+/**
+ * Analytics fica ligado por padrão em builds de produção (o consentimento continua
+ * obrigatório) e desligado em desenvolvimento. VITE_ENABLE_ANALYTICS=false desliga em
+ * qualquer ambiente; =true liga também em desenvolvimento.
+ */
+export function resolveAnalyticsEnabled(flag: string | undefined, isProduction: boolean): boolean {
+  if (flag === "false") return false;
+  if (flag === "true") return true;
+  return isProduction;
+}
+
 export function isAnalyticsConfigured(): boolean {
-  return import.meta.env["VITE_ENABLE_ANALYTICS"] === "true";
+  const env = import.meta.env as Record<string, unknown> | undefined;
+  const flag = env?.["VITE_ENABLE_ANALYTICS"];
+  return resolveAnalyticsEnabled(
+    typeof flag === "string" ? flag : undefined,
+    env?.["PROD"] === true,
+  );
 }
 
 export function isAnalyticsActive(configured: boolean, consent: AnalyticsConsent): boolean {
