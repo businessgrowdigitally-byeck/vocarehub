@@ -1,0 +1,24 @@
+name: Lockfile registry
+
+# Lovable's sandbox can write private registry URLs into bun.lock. Vercel
+# cannot reach them, so the deploy fails at install. Catch that here first.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: bun.lock only uses the public npm registry
+        run: |
+          bad=$(grep -oE '"https?://[^"]+\.tgz"' bun.lock | grep -v '"https://registry.npmjs.org/' || true)
+          if [ -n "$bad" ]; then
+            echo "::error file=bun.lock::bun.lock resolves packages from a non-public registry. Vercel cannot install these:"
+            echo "$bad" | sort -u
+            echo "Fix: sed -i -E 's#https://[^\"]+/sandbox-npm-cache/#https://registry.npmjs.org/#g' bun.lock"
+            exit 1
+          fi
+          echo "All bun.lock tarballs resolve from registry.npmjs.org"
