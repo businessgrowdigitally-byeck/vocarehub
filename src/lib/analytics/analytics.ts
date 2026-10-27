@@ -77,17 +77,27 @@ export function isAnalyticsActive(configured: boolean, consent: AnalyticsConsent
   return configured && consent === "granted";
 }
 
+/**
+ * Instala o gtag exatamente como no snippet oficial do Google. O gtag.js só reconhece
+ * comandos empilhados como objeto `arguments`; com um array comum (ex.: `(...args) =>
+ * dataLayer.push(args)`) ele ignora tudo em silêncio e nenhum dado chega ao Analytics.
+ */
+export function installGtag(target: { dataLayer?: unknown[]; gtag?: Gtag }): void {
+  const dataLayer = (target.dataLayer = target.dataLayer ?? []);
+  target.gtag = function gtag() {
+    // eslint-disable-next-line prefer-rest-params
+    dataLayer.push(arguments);
+  };
+}
+
 let loaded = false;
 
 export function loadGoogleAnalytics(id: string = GA_MEASUREMENT_ID): void {
   if (typeof window === "undefined" || loaded) return;
   loaded = true;
-  window.dataLayer = window.dataLayer ?? [];
-  window.gtag = (...args: unknown[]) => {
-    window.dataLayer?.push(args);
-  };
-  window.gtag("js", new Date());
-  window.gtag("config", id, { anonymize_ip: true });
+  installGtag(window);
+  window.gtag?.("js", new Date());
+  window.gtag?.("config", id, { anonymize_ip: true });
 
   const script = document.createElement("script");
   script.async = true;
