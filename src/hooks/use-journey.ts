@@ -11,6 +11,8 @@ import type {
 import { createInitialJourneyState, updateJourneyPhase } from "@/lib/journey/state";
 import { createJourneyStorage } from "@/lib/journey/storage";
 import { getNextPhase, hasJourneyStarted } from "@/lib/journey/progress";
+import { getJourneyTransitionEvents } from "@/lib/journey/events";
+import { trackEvent } from "@/lib/analytics/analytics";
 
 const storage = createJourneyStorage();
 const SERVER_STATE = createInitialJourneyState();
@@ -47,6 +49,8 @@ function getServerHydratedSnapshot(): boolean {
 }
 
 function commit(next: JourneyState, persist: boolean): void {
+  // Sem consentimento, trackEvent não faz nada (o Google Analytics nem é carregado).
+  for (const event of getJourneyTransitionEvents(currentState, next)) trackEvent(event);
   currentState = next;
   if (persist) storage.save(next);
   emit();
