@@ -46,6 +46,12 @@ nome do certificado — o público é menor de idade.
 - Imagem de compartilhamento: `public/og-image.png` (1200×630). A URL absoluta usa
   `SITE_URL` em `src/routes/__root.tsx` — troque ao adotar domínio próprio.
 
+## Guia visual
+
+`/como-usar` (`src/features/guide/`) mostra capturas reais com destaques numerados em
+`public/guia/`. Se as telas mudarem, regenere com `scripts/capture-guide.cjs` (instruções no
+topo do arquivo) e revise os textos em `guide-steps.ts`.
+
 ## Comandos
 
 ```

@@ -111,6 +111,14 @@ function Index() {
                   Jornada {progress}%
                 </span>
               )}
+              {!(isHydrated && hasStarted) && (
+                <Link
+                  to="/como-usar"
+                  className="text-sm text-offwhite/80 underline underline-offset-4 hover:text-solar"
+                >
+                  Primeira vez? Veja como funciona
+                </Link>
+              )}
             </div>
           </div>
         </div>
