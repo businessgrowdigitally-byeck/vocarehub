@@ -16,6 +16,7 @@ import {
   normalizeOnetScore,
   parseOnetInterests,
   renderGeneratedModule,
+  splitRow,
 } from "./onet-import.ts";
 
 const PENDING = ["digital-product", "entrepreneurship", "international-relations"];
@@ -66,6 +67,16 @@ describe("dados gerados", () => {
     for (const profile of SOURCED_CAREER_PROFILES) {
       assert.ok(isSourcedCareerProfileEligible(profile), profile.pathId);
     }
+  });
+
+  it("traz os 27 caminhos mapeados, importados do O*NET 31.0", () => {
+    assert.equal(ONET_SOURCE?.database, "O*NET 31.0");
+    assert.match(ONET_SOURCE?.sha256 ?? "", /^[0-9a-f]{64}$/);
+    assert.deepEqual(
+      SOURCED_CAREER_PROFILES.map((profile) => profile.pathId).sort(),
+      CAREER_PROFILE_MAPPINGS.map((mapping) => mapping.pathId).sort(),
+    );
+    assert.equal(getSourcedCareerCandidates().length, 27);
   });
 
   it("nenhum caminho pendente tem perfil gerado", () => {
@@ -182,6 +193,23 @@ describe("importação O*NET", () => {
   it("ignora ocupações sem as seis dimensões", () => {
     const rows = onetRows("11-1111.00", [1, 2, 3, 4, 5, 6]).slice(0, 5);
     assert.equal(parseOnetInterests([HEADER, ...rows].join("\n")).size, 0);
+  });
+
+  it("lê o CSV da versão 31.0, com títulos entre aspas e BOM", () => {
+    const header =
+      "\uFEFFO*NET-SOC Code,Title,Element ID,Element Name,Scale ID,Scale Name,Data Value,Date,Domain Source";
+    const rows = NAMES.map(
+      (name, i) =>
+        `27-4031.00,"Camera Operators, Television, Video, and Film",1.B.1.${"abcdef"[i]},${name},OI,Occupational Interests,${i + 1}.00,02/2026,Machine Learning/Expert`,
+    );
+    const parsed = parseOnetInterests([header, ...rows].join("\r\n"));
+    assert.deepEqual(parsed.get("27-4031.00"), { R: 1, I: 2, A: 3, S: 4, E: 5, C: 6 });
+  });
+
+  it("splitRow trata aspas e aspas escapadas", () => {
+    assert.deepEqual(splitRow('a,"b, c",d', ","), ["a", "b, c", "d"]);
+    assert.deepEqual(splitRow('"diz ""oi""",x', ","), ['diz "oi"', "x"]);
+    assert.deepEqual(splitRow("a\tb, c", "\t"), ["a", "b, c"]);
   });
 
   it("o módulo gerado traz a atribuição CC BY 4.0", () => {

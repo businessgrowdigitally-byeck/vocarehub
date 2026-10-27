@@ -38,13 +38,44 @@ export function roundTo4(value: number): number {
 }
 
 /**
- * Lê o arquivo `Interests.txt` do banco de dados O*NET (texto separado por tabulação).
- * Usa apenas as linhas da escala "OI" (Occupational Interests, 1–7).
- * Devolve, por código O*NET-SOC, as seis pontuações brutas.
+ * Divide uma linha em células. Aceita tabulação (formato texto) ou vírgula com campos entre
+ * aspas (CSV), como em "Camera Operators, Television, Video, and Film".
+ */
+export function splitRow(line: string, delimiter: string): string[] {
+  if (delimiter === "\t") return line.split("\t");
+  const cells: string[] = [];
+  let cell = "";
+  let quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (quoted) {
+      if (char === '"' && line[i + 1] === '"') {
+        cell += '"';
+        i++;
+      } else if (char === '"') quoted = false;
+      else cell += char;
+    } else if (char === '"') quoted = true;
+    else if (char === delimiter) {
+      cells.push(cell);
+      cell = "";
+    } else cell += char;
+  }
+  cells.push(cell);
+  return cells;
+}
+
+/**
+ * Lê o arquivo de interesses do O*NET: "Career Interest Types" (CSV, versão 31.0) ou o
+ * antigo `Interests.txt` (tabulação). Usa apenas as linhas da escala "OI"
+ * (Occupational Interests, 1–7). Devolve, por código O*NET-SOC, as seis pontuações brutas.
  */
 export function parseOnetInterests(text: string): Map<string, Record<RiasecDimension, number>> {
-  const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
-  const header = (lines[0] ?? "").split("\t");
+  const lines = text
+    .replace(/^\uFEFF/, "")
+    .split(/\r?\n/)
+    .filter((line) => line.trim() !== "");
+  const delimiter = (lines[0] ?? "").includes("\t") ? "\t" : ",";
+  const header = splitRow(lines[0] ?? "", delimiter);
   const col = (name: string) => {
     const index = header.indexOf(name);
     if (index === -1) throw new Error(`Coluna ausente no arquivo O*NET: ${name}`);
@@ -57,7 +88,7 @@ export function parseOnetInterests(text: string): Map<string, Record<RiasecDimen
 
   const partial = new Map<string, Partial<Record<RiasecDimension, number>>>();
   for (const line of lines.slice(1)) {
-    const cells = line.split("\t");
+    const cells = splitRow(line, delimiter);
     if (cells[scaleCol] !== "OI") continue;
     const dimension = ELEMENT_TO_DIMENSION[cells[elementCol] ?? ""];
     if (!dimension) continue;

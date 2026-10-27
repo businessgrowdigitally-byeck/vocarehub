@@ -38,19 +38,21 @@ Código em `src/lib/exploration/`. Testes em `*.test.ts` na mesma pasta e em
 - Mapeamento em `career-profile-mapping.ts`: 27 caminhos → códigos O\*NET-SOC (taxonomia
   2019), com confiança e observações. É uma adaptação de ocupações dos EUA para caminhos
   brasileiros, não uma validação para adolescentes brasileiros.
-- Pontuações em `career-profiles.generated.ts`, gerado a partir do `Interests.txt` oficial
-  (escala OI, 1–7): `(bruto - 1) / 6`, média aritmética entre as ocupações do caminho,
-  arredondamento a 4 casas no final. O arquivo registra banco, nome e SHA-256 da fonte.
-- **Estado atual: ainda não importado.** O ambiente onde o motor foi reconstruído não tinha
-  acesso ao site do O\*NET. Enquanto o arquivo gerado estiver vazio, o PENSAR não faz
-  sugestões e mostra o catálogo completo.
+- Pontuações em `career-profiles.generated.ts`, gerado a partir do arquivo oficial
+  "Career Interest Types" (escala OI, 1–7): `(bruto - 1) / 6`, média aritmética entre as
+  ocupações do caminho, arredondamento a 4 casas no final. O arquivo registra banco, nome e
+  SHA-256 da fonte.
+- **Estado atual:** importado do O\*NET 31.0 (`career_interest_types.csv`), 27 perfis.
+- `21-1029.00` (Social Workers, All Other) não tem dados de interesse no O\*NET; Serviço
+  Social usa só `21-1021.00`, com confiança média.
 
 ### Como importar
 
-1. Baixe o banco O\*NET em formato texto em https://www.onetcenter.org/database.html e
-   extraia `Interests.txt`.
-2. `node scripts/import-onet-interests.ts caminho/para/Interests.txt "O*NET 30.0"` (use a
-   versão baixada). O script falha se algum código mapeado não existir no arquivo.
+1. Em https://www.onetcenter.org/database.html, seção "Excel, CSV, JSON" → "Career
+   Interests" → "Career Interest Types", baixe em CSV. (Versões antigas: `Interests.txt`
+   do download em texto também funciona.)
+2. `node scripts/import-onet-interests.ts caminho/para/career_interest_types.csv "O*NET 31.0"`
+   (use a versão baixada). O script falha se algum código mapeado não existir no arquivo.
 3. `npx prettier --write src/lib/exploration/career-profiles.generated.ts` e `npm test`.
 
 ### Licença
@@ -69,5 +71,7 @@ exceto quando o estudante reinicia a jornada.
 ## Limitações conhecidas
 
 - Os 30 itens são originais e ainda não passaram por validação psicométrica.
+- No O\*NET 31.0 os perfis de interesse vêm de "Machine Learning/Expert" (modelo revisado
+  por especialistas), não de pesquisa direta com trabalhadores.
 - Referências CBO (Classificação Brasileira de Ocupações) ainda não foram adicionadas ao
   mapeamento; os títulos dos caminhos já estão em português.

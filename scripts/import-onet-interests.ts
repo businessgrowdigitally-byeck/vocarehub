@@ -1,9 +1,10 @@
 // Gera src/lib/exploration/career-profiles.generated.ts a partir do arquivo oficial do O*NET.
 //
 // Uso:
-//   node scripts/import-onet-interests.ts <caminho/para/Interests.txt> "O*NET 30.0"
+//   node scripts/import-onet-interests.ts <caminho/para/arquivo> "O*NET 31.0"
 //
-// O arquivo vem do download "Text" do banco de dados em https://www.onetcenter.org/database.html
+// Arquivo: "Career Interest Types" em CSV (O*NET 31.0+, seção "Career Interests" de
+// https://www.onetcenter.org/database.html) ou o antigo Interests.txt (tabulação).
 
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -19,7 +20,7 @@ import {
 
 const [inputPath, database] = process.argv.slice(2);
 if (!inputPath || !database) {
-  console.error('Uso: node scripts/import-onet-interests.ts <Interests.txt> "O*NET 30.0"');
+  console.error('Uso: node scripts/import-onet-interests.ts <arquivo> "O*NET 31.0"');
   process.exit(1);
 }
 

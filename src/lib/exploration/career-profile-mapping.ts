@@ -97,7 +97,12 @@ export const CAREER_PROFILE_MAPPINGS: readonly CareerProfileMapping[] = [
     note: "Coordenação pedagógica e ensino fundamental.",
   },
   { pathId: "teaching-degrees", onetSocCodes: ["25-2031.00"], confidence: "high" },
-  { pathId: "social-work", onetSocCodes: ["21-1021.00", "21-1029.00"], confidence: "high" },
+  {
+    pathId: "social-work",
+    onetSocCodes: ["21-1021.00"],
+    confidence: "medium",
+    note: "Só assistência social a crianças, famílias e escolas; o Serviço Social brasileiro é mais amplo.",
+  },
 ];
 
 /** Caminhos sem perfil ocupacional adequado. Nunca recebem pontuação inventada. */

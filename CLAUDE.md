@@ -45,5 +45,5 @@ A CI (`.github/workflows/lockfile-registry.yml`) bloqueia URLs de registro priva
 
 ## Pendências
 
-- Importar os dados do O\*NET (`docs/exploration-engine.md`, "Como importar"). Até lá o
-  PENSAR não faz sugestões personalizadas.
+- Adicionar referências CBO ao mapeamento de perfis.
+- Validar os 30 itens do questionário com estudantes reais.
