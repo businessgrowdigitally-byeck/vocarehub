@@ -32,9 +32,9 @@ banco de dados no MVP: a jornada fica no `localStorage` (`src/lib/journey/`, cha
 
 ## Analytics
 
-Google Analytics 4 (`src/lib/analytics/analytics.ts`), só depois do consentimento no banner e
-só se `VITE_ENABLE_ANALYTICS=true` estiver definido no build (Vercel → Environment
-Variables). Eventos de funil, sem parâmetros nem dados pessoais: `ser_started`,
+Google Analytics 4 (`src/lib/analytics/analytics.ts`), sempre só depois do consentimento no
+banner. Ligado por padrão em builds de produção e desligado em `npm run dev`;
+`VITE_ENABLE_ANALYTICS=false` desliga em qualquer ambiente e `=true` liga no dev. Eventos de funil, sem parâmetros nem dados pessoais: `ser_started`,
 `ser_completed`, `pensar_completed`, `fazer_completed` (em `src/lib/journey/events.ts`, a
 partir das mudanças de status) e `passport_downloaded`. Nunca envie respostas, caminhos ou o
 nome do certificado — o público é menor de idade.
