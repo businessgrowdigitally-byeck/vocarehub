@@ -1,3 +1,7 @@
+import { getSourcedCareerCandidates } from "../../lib/exploration/career-profiles.ts";
+import type { CareerCandidate } from "../../lib/exploration/matching.ts";
+import { buildCareerRanking } from "../../lib/exploration/matching.ts";
+import { computeInterestProfile } from "../../lib/exploration/scoring.ts";
 import type { PensarPhase, SerPhase } from "../../lib/journey/types.ts";
 import type { CareerPath } from "./career-paths.ts";
 import { CAREER_PATHS } from "./career-paths.ts";
@@ -59,19 +63,42 @@ export function getPensarResumeStep(pensar: PensarPhase): number {
   return 2;
 }
 
-export function getPathRelevance(path: CareerPath, serState: SerPhase): number {
-  const known = new Set([...serState.interests, ...serState.strengths, ...serState.values]);
-  return path.tags.filter((tag) => known.has(tag)).length;
+export type RecommendationStatus =
+  /** O questionário de interesses ainda não foi respondido por completo. */
+  | "incomplete-profile"
+  /** Não há perfis profissionais com fonte disponíveis. */
+  | "no-sourced-profiles"
+  /** Há perfis, mas nenhum ficou acima do limiar de elegibilidade. */
+  | "no-matches"
+  | "ok";
+
+export type RecommendationResult = {
+  status: RecommendationStatus;
+  paths: CareerPath[];
+};
+
+/**
+ * Recomendações do PENSAR. Usa só o perfil de interesses do SER (forças, valores e
+ * preferências não entram) e só candidatos com fonte ocupacional válida.
+ * Não há ranking alternativo: sem candidatos válidos, a lista volta vazia com o motivo.
+ */
+export function getRecommendationResult(
+  serState: SerPhase,
+  candidates: readonly CareerCandidate[] = getSourcedCareerCandidates(),
+): RecommendationResult {
+  const profile = computeInterestProfile(serState.interestResponses);
+  if (!profile) return { status: "incomplete-profile", paths: [] };
+  if (candidates.length === 0) return { status: "no-sourced-profiles", paths: [] };
+
+  const paths = buildCareerRanking(profile, candidates)
+    .recommendations.map((entry) => getCareerPath(entry.pathId))
+    .filter((path): path is CareerPath => Boolean(path));
+  return { status: paths.length > 0 ? "ok" : "no-matches", paths };
 }
 
-export function getRecommendedPaths(serState: SerPhase, limit = 6): CareerPath[] {
-  return CAREER_PATHS.map((path, index) => ({
-    path,
-    index,
-    score: getPathRelevance(path, serState),
-  }))
-    .filter((entry) => entry.score > 0)
-    .sort((a, b) => b.score - a.score || a.index - b.index)
-    .slice(0, limit)
-    .map((entry) => entry.path);
+export function getRecommendedPaths(
+  serState: SerPhase,
+  candidates?: readonly CareerCandidate[],
+): CareerPath[] {
+  return getRecommendationResult(serState, candidates).paths;
 }

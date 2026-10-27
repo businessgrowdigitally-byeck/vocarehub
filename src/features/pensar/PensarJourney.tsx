@@ -14,7 +14,7 @@ import {
   addExploredPath,
   getCareerPath,
   getPensarResumeStep,
-  getRecommendedPaths,
+  getRecommendationResult,
   isValidPathSelection,
   setSelectedPaths,
   toggleSavedPath,
@@ -266,7 +266,10 @@ export function PensarJourney() {
     setStep(getPensarResumeStep(state.pensar));
   }, [isHydrated, step, state.pensar]);
 
-  const recommendations = getRecommendedPaths(state.ser);
+  const recommendation = getRecommendationResult(state.ser);
+  const recommendations = recommendation.paths;
+  // Sem sugestões, o catálogo completo fica aberto para o estudante seguir explorando.
+  const areasVisible = showAllAreas || recommendation.status !== "ok";
   const savedPaths = pensar.savedPathIds
     .map((id) => getCareerPath(id))
     .filter((path): path is CareerPath => Boolean(path));
@@ -368,15 +371,45 @@ export function PensarJourney() {
                     quiser.
                   </p>
 
+                  {recommendation.status !== "ok" && (
+                    <div
+                      className="mt-7 rounded-2xl border border-offwhite/15 bg-offwhite/5 p-5 text-sm text-offwhite/80"
+                      role="status"
+                    >
+                      {recommendation.status === "incomplete-profile" && (
+                        <p>
+                          Para ver caminhos parecidos com os seus interesses, termine o questionário
+                          do{" "}
+                          <Link to="/ser" className="text-cian underline underline-offset-4">
+                            SER
+                          </Link>
+                          . Enquanto isso, você já pode explorar todas as áreas abaixo.
+                        </p>
+                      )}
+                      {recommendation.status === "no-sourced-profiles" && (
+                        <p>
+                          As sugestões personalizadas ainda estão sendo preparadas com dados
+                          profissionais verificados. Por enquanto, explore todas as áreas abaixo.
+                        </p>
+                      )}
+                      {recommendation.status === "no-matches" && (
+                        <p>
+                          Nenhum caminho ficou parecido o bastante com as suas respostas para virar
+                          sugestão — e tudo bem. Explore todas as áreas abaixo.
+                        </p>
+                      )}
+                    </div>
+                  )}
+
                   {recommendations.length > 0 && (
                     <section className="mt-7">
                       <h3 className="font-display text-xl font-bold">
                         Alguns caminhos para começar
                       </h3>
                       <p className="mt-2 max-w-2xl text-sm text-offwhite/70">
-                        Eles aparecem porque compartilham elementos com o que chamou sua atenção no
-                        SER. Isso não significa que sejam as escolhas certas para você — use como
-                        ponto de partida.
+                        Eles aparecem porque o perfil de interesses dessas profissões se parece com
+                        as suas respostas no SER. Isso não significa que sejam as escolhas certas
+                        para você — use como ponto de partida.
                       </p>
                       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {recommendations.map((path) => (
@@ -389,23 +422,29 @@ export function PensarJourney() {
                           />
                         ))}
                       </div>
+                      <p className="mt-4 text-xs text-offwhite/45">
+                        Perfis de interesse das profissões adaptados do banco de dados O*NET
+                        (USDOL/ETA), licença CC BY 4.0. Os dados descrevem ocupações dos EUA.
+                      </p>
                     </section>
                   )}
 
-                  <button
-                    type="button"
-                    aria-expanded={showAllAreas}
-                    onClick={() => setShowAllAreas((value) => !value)}
-                    className="tap mt-8 inline-flex items-center gap-2 rounded-full border border-offwhite/25 px-5 py-3 text-sm text-offwhite/85 transition-colors hover:bg-offwhite/10"
-                  >
-                    {showAllAreas ? "Ocultar áreas" : "Explorar todas as áreas"}
-                    <ChevronDown
-                      className={cn("h-4 w-4 transition-transform", showAllAreas && "rotate-180")}
-                      aria-hidden="true"
-                    />
-                  </button>
+                  {recommendation.status === "ok" && (
+                    <button
+                      type="button"
+                      aria-expanded={showAllAreas}
+                      onClick={() => setShowAllAreas((value) => !value)}
+                      className="tap mt-8 inline-flex items-center gap-2 rounded-full border border-offwhite/25 px-5 py-3 text-sm text-offwhite/85 transition-colors hover:bg-offwhite/10"
+                    >
+                      {showAllAreas ? "Ocultar áreas" : "Explorar todas as áreas"}
+                      <ChevronDown
+                        className={cn("h-4 w-4 transition-transform", showAllAreas && "rotate-180")}
+                        aria-hidden="true"
+                      />
+                    </button>
+                  )}
 
-                  {showAllAreas && (
+                  {areasVisible && (
                     <div className="mt-6 space-y-8">
                       {CAREER_AREAS.map((area) => (
                         <section key={area.id}>

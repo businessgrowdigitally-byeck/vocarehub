@@ -3,21 +3,6 @@ export type SerOption = {
   label: string;
 };
 
-export const INTEREST_OPTIONS: readonly SerOption[] = [
-  { id: "create", label: "Criar" },
-  { id: "technology", label: "Tecnologia" },
-  { id: "help-people", label: "Ajudar pessoas" },
-  { id: "communicate", label: "Comunicar" },
-  { id: "investigate", label: "Investigar" },
-  { id: "organize", label: "Organizar" },
-  { id: "build", label: "Construir" },
-  { id: "problem-solving", label: "Resolver problemas" },
-  { id: "teach", label: "Ensinar" },
-  { id: "lead", label: "Liderar" },
-  { id: "entrepreneurship", label: "Empreender" },
-  { id: "nature-environment", label: "Natureza e meio ambiente" },
-];
-
 export const STRENGTH_OPTIONS: readonly SerOption[] = [
   { id: "problem-solving", label: "Resolver problemas" },
   { id: "explaining", label: "Explicar algo para alguém" },
@@ -48,8 +33,6 @@ export const VALUE_OPTIONS: readonly SerOption[] = [
   { id: "challenge", label: "Desafio" },
 ];
 
-export const INTEREST_MIN = 3;
-export const INTEREST_MAX = 5;
 export const STRENGTH_MIN = 2;
 export const STRENGTH_MAX = 5;
 export const VALUE_MAX = 5;

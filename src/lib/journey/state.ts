@@ -2,6 +2,7 @@ import type {
   FazerPhase,
   JourneyPhase,
   JourneyState,
+  JourneyStateV1,
   PensarPhase,
   PhaseStatus,
   SerPhase,
@@ -14,7 +15,7 @@ export function createInitialJourneyState(): JourneyState {
     version: JOURNEY_VERSION,
     ser: {
       status: "not_started",
-      interests: [],
+      interestResponses: {},
       strengths: [],
       values: [],
       preferences: {
@@ -59,17 +60,22 @@ function isNullableString(value: unknown): value is string | null {
   return value === null || typeof value === "string";
 }
 
-export function isJourneyStateV1(value: unknown): value is JourneyState {
-  if (!isRecord(value)) return false;
-  if (value["version"] !== JOURNEY_VERSION) return false;
+function isAnswerRecord(value: unknown): value is Record<string, number> {
+  if (!isRecord(value) || Array.isArray(value)) return false;
+  return Object.values(value).every(
+    (answer) =>
+      typeof answer === "number" && Number.isInteger(answer) && answer >= 1 && answer <= 5,
+  );
+}
 
+/** Valida as partes comuns às versões 1 e 2 (tudo menos os interesses do SER). */
+function hasValidPhases(value: Record<string, unknown>): boolean {
   const ser = value["ser"];
   const pensar = value["pensar"];
   const fazer = value["fazer"];
   if (!isRecord(ser) || !isRecord(pensar) || !isRecord(fazer)) return false;
 
   if (!isPhaseStatus(ser["status"])) return false;
-  if (!isStringArray(ser["interests"])) return false;
   if (!isStringArray(ser["strengths"])) return false;
   if (!isStringArray(ser["values"])) return false;
 
@@ -91,6 +97,40 @@ export function isJourneyStateV1(value: unknown): value is JourneyState {
   if (!isNullableString(fazer["targetDate"])) return false;
 
   return true;
+}
+
+export function isJourneyStateV1(value: unknown): value is JourneyStateV1 {
+  if (!isRecord(value) || value["version"] !== 1) return false;
+  const ser = value["ser"];
+  if (!isRecord(ser) || !isStringArray(ser["interests"])) return false;
+  return hasValidPhases(value);
+}
+
+export function isJourneyStateV2(value: unknown): value is JourneyState {
+  if (!isRecord(value) || value["version"] !== JOURNEY_VERSION) return false;
+  const ser = value["ser"];
+  if (!isRecord(ser) || !isAnswerRecord(ser["interestResponses"])) return false;
+  return hasValidPhases(value);
+}
+
+/**
+ * Leva o progresso da versão 1 para a 2. As etiquetas de interesse antigas não viram
+ * respostas do questionário (não há como convertê-las com validade), então o SER volta
+ * para "em andamento" e o estudante responde o questionário. Forças, valores,
+ * preferências, PENSAR e FAZER são mantidos como estão.
+ */
+export function migrateJourneyV1ToV2(v1: JourneyStateV1): JourneyState {
+  const { interests: _discarded, ...ser } = v1.ser;
+  return {
+    version: JOURNEY_VERSION,
+    ser: {
+      ...ser,
+      status: ser.status === "not_started" ? "not_started" : "in_progress",
+      interestResponses: {},
+    },
+    pensar: { ...v1.pensar },
+    fazer: { ...v1.fazer },
+  };
 }
 
 export function updateJourneyPhase(
