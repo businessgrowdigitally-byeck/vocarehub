@@ -30,6 +30,15 @@ banco de dados no MVP: a jornada fica no `localStorage` (`src/lib/journey/`, cha
 - `digital-product`, `entrepreneurship` e `international-relations` nunca são recomendados.
 - Não altere fórmulas, limiares ou pontuações para "melhorar" resultados.
 
+## Analytics
+
+Google Analytics 4 (`src/lib/analytics/analytics.ts`), só depois do consentimento no banner e
+só se `VITE_ENABLE_ANALYTICS=true` estiver definido no build (Vercel → Environment
+Variables). Eventos de funil, sem parâmetros nem dados pessoais: `ser_started`,
+`ser_completed`, `pensar_completed`, `fazer_completed` (em `src/lib/journey/events.ts`, a
+partir das mudanças de status) e `passport_downloaded`. Nunca envie respostas, caminhos ou o
+nome do certificado — o público é menor de idade.
+
 ## Comandos
 
 ```

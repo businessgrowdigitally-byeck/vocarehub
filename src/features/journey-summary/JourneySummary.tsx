@@ -5,6 +5,7 @@ import { ArrowRight, Award, Download, RotateCcw } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useJourney } from "@/hooks/use-journey";
+import { trackEvent } from "@/lib/analytics/analytics";
 import { buildCertificatePdf, latin1Bytes } from "./certificate";
 import { buildJourneySummary, isJourneyComplete } from "./summary-logic";
 
@@ -54,6 +55,8 @@ export function JourneySummary() {
     anchor.click();
     anchor.remove();
     URL.revokeObjectURL(url);
+    // Sem parâmetros: o nome digitado no certificado nunca sai do navegador.
+    trackEvent("passport_downloaded");
   };
 
   const restart = () => {
