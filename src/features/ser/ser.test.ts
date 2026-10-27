@@ -8,6 +8,7 @@ import {
   getPreferenceSummary,
   getFirstUnansweredInterestPage,
   getInterestSummary,
+  getNextScaleValue,
   getSerResumeStep,
   isStrengthSelectionValid,
   isValueSelectionValid,
@@ -156,5 +157,28 @@ describe("questionário de interesses", () => {
     const summary = getInterestSummary(allAnswers());
     assert.equal(summary?.pattern, "flat");
     assert.deepEqual(summary?.themes, []);
+  });
+});
+
+describe("getNextScaleValue (teclado)", () => {
+  it("setas avançam e voltam, com volta nas pontas", () => {
+    assert.equal(getNextScaleValue(3, "ArrowRight", 5), 4);
+    assert.equal(getNextScaleValue(3, "ArrowDown", 5), 4);
+    assert.equal(getNextScaleValue(3, "ArrowLeft", 5), 2);
+    assert.equal(getNextScaleValue(3, "ArrowUp", 5), 2);
+    assert.equal(getNextScaleValue(5, "ArrowRight", 5), 1);
+    assert.equal(getNextScaleValue(1, "ArrowLeft", 5), 5);
+  });
+
+  it("Home e End vão às pontas; sem resposta, parte da primeira opção", () => {
+    assert.equal(getNextScaleValue(3, "Home", 5), 1);
+    assert.equal(getNextScaleValue(3, "End", 5), 5);
+    assert.equal(getNextScaleValue(undefined, "ArrowRight", 5), 2);
+    assert.equal(getNextScaleValue(undefined, "ArrowLeft", 5), 5);
+  });
+
+  it("outras teclas não mudam a resposta", () => {
+    assert.equal(getNextScaleValue(3, "Tab", 5), null);
+    assert.equal(getNextScaleValue(3, " ", 5), null);
   });
 });

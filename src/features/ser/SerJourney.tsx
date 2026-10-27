@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
@@ -28,6 +28,7 @@ import {
   canCompleteSer,
   getFirstUnansweredInterestPage,
   getInterestSummary,
+  getNextScaleValue,
   getOptionLabel,
   getPreferenceSummary,
   getSerResumeStep,
@@ -42,6 +43,63 @@ function toggleId(list: string[], id: string, max: number): string[] {
   if (list.includes(id)) return list.filter((item) => item !== id);
   if (list.length >= max) return list;
   return [...list, id];
+}
+
+/** Uma pergunta = uma parada de Tab; as setas trocam a resposta (padrão de radio group). */
+function InterestScale({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: number | undefined;
+  onChange: (value: number) => void;
+}) {
+  const buttons = useRef<(HTMLButtonElement | null)[]>([]);
+  const focusIndex = (value ?? 1) - 1;
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const next = getNextScaleValue(value, event.key, INTEREST_SCALE_LABELS.length);
+    if (next === null) return;
+    event.preventDefault();
+    onChange(next);
+    buttons.current[next - 1]?.focus();
+  };
+
+  return (
+    <div
+      className="mt-3 grid grid-cols-5 gap-1.5 sm:gap-2"
+      role="radiogroup"
+      aria-label={label}
+      onKeyDown={onKeyDown}
+    >
+      {INTEREST_SCALE_LABELS.map((option, index) => {
+        const n = index + 1;
+        const active = value === n;
+        return (
+          <button
+            key={option}
+            ref={(element) => {
+              buttons.current[index] = element;
+            }}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            tabIndex={index === focusIndex ? 0 : -1}
+            onClick={() => onChange(n)}
+            className={cn(
+              "tap rounded-xl border px-1 py-2.5 text-[11px] leading-tight transition-colors sm:text-xs",
+              active
+                ? "border-solar bg-solar font-medium text-ink"
+                : "border-offwhite/20 text-offwhite/80 hover:border-solar/60",
+            )}
+          >
+            {option}
+          </button>
+        );
+      })}
+    </div>
+  );
 }
 
 function Chip({
@@ -277,33 +335,11 @@ export function SerJourney() {
                       return (
                         <li key={item.id}>
                           <p className="text-offwhite/90">{item.text}</p>
-                          <div
-                            className="mt-3 grid grid-cols-5 gap-1.5 sm:gap-2"
-                            role="radiogroup"
-                            aria-label={item.text}
-                          >
-                            {INTEREST_SCALE_LABELS.map((label, index) => {
-                              const n = index + 1;
-                              const active = value === n;
-                              return (
-                                <button
-                                  key={label}
-                                  type="button"
-                                  role="radio"
-                                  aria-checked={active}
-                                  onClick={() => setInterestAnswer(item.id, n)}
-                                  className={cn(
-                                    "tap rounded-xl border px-1 py-2.5 text-[11px] leading-tight transition-colors sm:text-xs",
-                                    active
-                                      ? "border-solar bg-solar font-medium text-ink"
-                                      : "border-offwhite/20 text-offwhite/80 hover:border-solar/60",
-                                  )}
-                                >
-                                  {label}
-                                </button>
-                              );
-                            })}
-                          </div>
+                          <InterestScale
+                            label={item.text}
+                            value={value}
+                            onChange={(n) => setInterestAnswer(item.id, n)}
+                          />
                         </li>
                       );
                     })}

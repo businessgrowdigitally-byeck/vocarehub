@@ -98,3 +98,21 @@ export function getInterestSummary(responses: InterestResponses): InterestSummar
       .map((dimension) => RIASEC_THEMES[dimension]),
   };
 }
+
+/**
+ * Teclado no grupo de respostas (padrão WAI-ARIA de radio group): setas mudam a resposta
+ * com volta ao início/fim; Home e End vão às pontas. Sem resposta, o foco está na
+ * primeira opção. Devolve null para teclas que não mudam a resposta.
+ */
+export function getNextScaleValue(
+  current: number | undefined,
+  key: string,
+  max: number,
+): number | null {
+  const position = current ?? 1;
+  if (key === "ArrowRight" || key === "ArrowDown") return position >= max ? 1 : position + 1;
+  if (key === "ArrowLeft" || key === "ArrowUp") return position <= 1 ? max : position - 1;
+  if (key === "Home") return 1;
+  if (key === "End") return max;
+  return null;
+}
