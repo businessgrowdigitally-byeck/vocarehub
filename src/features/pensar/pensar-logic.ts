@@ -1,6 +1,9 @@
 import { getSourcedCareerCandidates } from "../../lib/exploration/career-profiles.ts";
+import { getSharedThemes } from "../../lib/exploration/explanation.ts";
 import type { CareerCandidate } from "../../lib/exploration/matching.ts";
 import { buildCareerRanking } from "../../lib/exploration/matching.ts";
+import type { RiasecTheme } from "../../lib/exploration/riasec.ts";
+import { RIASEC_THEMES } from "../../lib/exploration/riasec.ts";
 import { computeInterestProfile } from "../../lib/exploration/scoring.ts";
 import type { PensarPhase, SerPhase } from "../../lib/journey/types.ts";
 import type { CareerPath } from "./career-paths.ts";
@@ -101,4 +104,34 @@ export function getRecommendedPaths(
   candidates?: readonly CareerCandidate[],
 ): CareerPath[] {
   return getRecommendationResult(serState, candidates).paths;
+}
+
+/**
+ * Por que cada caminho sugerido aparece: temas fortes em comum entre o estudante e a
+ * profissão. Caminhos sem tema em comum ficam de fora (a tela não mostra explicação).
+ */
+export function getRecommendationReasons(
+  serState: SerPhase,
+  pathIds: readonly string[],
+  candidates: readonly CareerCandidate[] = getSourcedCareerCandidates(),
+): Record<string, RiasecTheme[]> {
+  const profile = computeInterestProfile(serState.interestResponses);
+  if (!profile) return {};
+  const reasons: Record<string, RiasecTheme[]> = {};
+  for (const pathId of pathIds) {
+    const candidate = candidates.find((item) => item.pathId === pathId);
+    if (!candidate) continue;
+    const themes = getSharedThemes(profile, candidate.interests).map((d) => RIASEC_THEMES[d]);
+    if (themes.length > 0) reasons[pathId] = themes;
+  }
+  return reasons;
+}
+
+/** Frase curta para o cartão: Combina com seus interesses em “Investigar” e “Organizar”. */
+export function formatReason(themes: readonly RiasecTheme[]): string | null {
+  if (themes.length === 0) return null;
+  const quoted = themes.map((theme) => `“${theme.label}”`);
+  const list =
+    quoted.length === 1 ? quoted[0] : `${quoted.slice(0, -1).join(", ")} e ${quoted.at(-1)}`;
+  return `Combina com seu interesse em ${list}.`;
 }

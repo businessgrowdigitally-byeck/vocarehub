@@ -18,6 +18,7 @@ export function SiteFooter() {
             { label: "Biblioteca", to: "/biblioteca" },
             { label: "Oportunidades", to: "/oportunidades" },
             { label: "Para escolas", to: "/escolas" },
+            { label: "Privacidade", to: "/privacidade" },
           ].map((l) => (
             <Link key={l.to} to={l.to} className="eyebrow text-offwhite/60 hover:text-solar">
               {l.label}
@@ -26,6 +27,15 @@ export function SiteFooter() {
         </div>
         <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.18em] text-offwhite/40">
           100% gratuito · Online · Feito para jovens
+        </p>
+        <p className="mt-3 text-[11px] text-offwhite/50">
+          Contato:{" "}
+          <a
+            href="mailto:vocare.institucional@gmail.com"
+            className="underline underline-offset-2 hover:text-offwhite/80"
+          >
+            vocare.institucional@gmail.com
+          </a>
         </p>
         <p className="mt-3 text-[11px] text-offwhite/35">
           feito por{" "}

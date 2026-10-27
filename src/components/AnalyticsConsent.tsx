@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 import {
   type AnalyticsConsent,
@@ -36,8 +37,11 @@ export function AnalyticsConsentBanner() {
     >
       <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-offwhite/75">
-          Ajuda a melhorar o VOcare? Usamos analytics anônimo para entender como a jornada é usada.
-          Nenhum dado pessoal é coletado.
+          Ajuda a melhorar o VOcare? Usamos o Google Analytics para entender como a jornada é usada
+          — nunca suas respostas ou seu nome.{" "}
+          <Link to="/privacidade" className="text-solar underline underline-offset-4">
+            Saiba mais
+          </Link>
         </p>
         <div className="flex shrink-0 gap-2">
           <button

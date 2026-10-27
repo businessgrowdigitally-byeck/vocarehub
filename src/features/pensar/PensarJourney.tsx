@@ -14,6 +14,8 @@ import {
   addExploredPath,
   getCareerPath,
   getPensarResumeStep,
+  formatReason,
+  getRecommendationReasons,
   getRecommendationResult,
   isValidPathSelection,
   setSelectedPaths,
@@ -28,11 +30,13 @@ function PathCard({
   isSaved,
   onOpen,
   onToggleSave,
+  reason,
 }: {
   path: CareerPath;
   isSaved: boolean;
   onOpen: () => void;
   onToggleSave: () => void;
+  reason?: string | null;
 }) {
   const area = getCareerArea(path.areaId);
   return (
@@ -40,6 +44,7 @@ function PathCard({
       <p className="eyebrow text-cian">{area?.title}</p>
       <h4 className="mt-2 font-display text-lg font-bold leading-tight">{path.title}</h4>
       <p className="mt-2 flex-1 text-sm text-offwhite/75">{path.shortDescription}</p>
+      {reason && <p className="mt-3 text-xs text-solar/90">{reason}</p>}
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <button
           type="button"
@@ -268,6 +273,10 @@ export function PensarJourney() {
 
   const recommendation = getRecommendationResult(state.ser);
   const recommendations = recommendation.paths;
+  const reasons = getRecommendationReasons(
+    state.ser,
+    recommendations.map((path) => path.id),
+  );
   // Sem sugestões, o catálogo completo fica aberto para o estudante seguir explorando.
   const areasVisible = showAllAreas || recommendation.status !== "ok";
   const savedPaths = pensar.savedPathIds
@@ -416,6 +425,7 @@ export function PensarJourney() {
                           <PathCard
                             key={path.id}
                             path={path}
+                            reason={formatReason(reasons[path.id] ?? [])}
                             isSaved={pensar.savedPathIds.includes(path.id)}
                             onOpen={() => openPath(path.id)}
                             onToggleSave={() => toggleSave(path.id)}

@@ -9,6 +9,8 @@ import {
   canCompletePensar,
   getCareerPath,
   getPensarResumeStep,
+  formatReason,
+  getRecommendationReasons,
   getRecommendationResult,
   getRecommendedPaths,
   isKnownPathId,
@@ -295,5 +297,39 @@ describe("recomendação (SER → perfil RIASEC → candidatos com fonte → ran
     );
     assert.ok(first.length <= 6);
     assert.equal(new Set(first).size, first.length);
+  });
+});
+
+describe("explicação das sugestões", () => {
+  const candidates = getSourcedCareerCandidates(FIXTURES);
+
+  it("explica cada sugestão pelos temas em comum, sem mudar o ranking", () => {
+    const ser = serState({ interestResponses: INVESTIGATIVE_ANSWERS });
+    const before = getRecommendedPaths(ser, candidates).map((path) => path.id);
+    const reasons = getRecommendationReasons(ser, before, candidates);
+    assert.deepEqual(
+      reasons["data"]?.map((theme) => theme.dimension),
+      ["I", "C"],
+    );
+    assert.deepEqual(
+      getRecommendedPaths(ser, candidates).map((path) => path.id),
+      before,
+    );
+  });
+
+  it("sem perfil completo ou caminho sem dados, não há explicação", () => {
+    assert.deepEqual(getRecommendationReasons(serState(), ["data"], candidates), {});
+    const ser = serState({ interestResponses: INVESTIGATIVE_ANSWERS });
+    assert.deepEqual(getRecommendationReasons(ser, ["entrepreneurship"], candidates), {});
+  });
+
+  it("formata a frase do cartão", () => {
+    const ser = serState({ interestResponses: INVESTIGATIVE_ANSWERS });
+    const reasons = getRecommendationReasons(ser, ["data"], candidates);
+    assert.equal(
+      formatReason(reasons["data"] ?? []),
+      "Combina com seu interesse em “Investigar” e “Organizar”.",
+    );
+    assert.equal(formatReason([]), null);
   });
 });

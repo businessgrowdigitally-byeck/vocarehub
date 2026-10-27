@@ -123,6 +123,12 @@ export function JourneySummary() {
                   <TagList items={summary.strengths} />
                   <p className="mt-4 eyebrow text-offwhite/50">Valores</p>
                   <TagList items={summary.values} />
+                  <p className="mt-4 eyebrow text-offwhite/50">Preferências de trabalho</p>
+                  <ul className="mt-3 space-y-2 text-xs text-offwhite/70">
+                    {summary.preferences.map((phrase) => (
+                      <li key={phrase}>{phrase}</li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div className="rounded-3xl border border-offwhite/12 bg-offwhite/5 p-6">
@@ -133,12 +139,6 @@ export function JourneySummary() {
                       <li key={path.id} className="text-sm text-offwhite/85">
                         {path.title}
                       </li>
-                    ))}
-                  </ul>
-                  <p className="mt-4 eyebrow text-offwhite/50">Preferências de trabalho</p>
-                  <ul className="mt-3 space-y-2 text-xs text-offwhite/70">
-                    {summary.preferences.map((phrase) => (
-                      <li key={phrase}>{phrase}</li>
                     ))}
                   </ul>
                 </div>
