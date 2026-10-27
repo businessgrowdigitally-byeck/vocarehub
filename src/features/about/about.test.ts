@@ -69,3 +69,17 @@ test("offers calls to action for young people and educators", () => {
   assert.ok(pageFile.includes('to="/ser"'), "should link to /ser for young people");
   assert.ok(pageFile.includes('to="/escolas"'), "should link to /escolas for educators");
 });
+
+test("explains how suggestions are made, with O*NET attribution and limits", () => {
+  const required = [
+    "30 perguntas",
+    "O*NET",
+    "CC BY 4.0",
+    "USDOL/ETA",
+    "não mudam as sugestões",
+    "pontos de partida",
+  ];
+  for (const term of required) {
+    assert.ok(pageFile.includes(term), `AboutPage should mention "${term}"`);
+  }
+});

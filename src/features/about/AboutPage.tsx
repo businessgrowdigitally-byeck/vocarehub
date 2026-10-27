@@ -61,6 +61,13 @@ const phases = [
   },
 ] as const;
 
+const suggestionSteps = [
+  "No SER, você responde 30 perguntas curtas sobre atividades. Não precisa saber fazer — só dizer o quanto gostaria de experimentar.",
+  "As respostas formam um retrato dos seus interesses em seis temas: fazer na prática, investigar, criar, cuidar e ensinar, liderar e empreender, e organizar.",
+  "No PENSAR, esse retrato é comparado com perfis de interesse de profissões do O*NET, um banco de dados público do Departamento do Trabalho dos Estados Unidos. Os caminhos mais parecidos aparecem como sugestões.",
+  "Só os interesses entram nessa comparação. Forças, valores e preferências ajudam você a refletir, mas não mudam as sugestões.",
+];
+
 const notVocare = [
   "Teste que revela sua “profissão ideal”",
   "Diagnóstico psicológico ou avaliação de personalidade",
@@ -298,6 +305,44 @@ export function AboutPage() {
           <p className="mt-10 font-display text-xl font-bold text-solar">
             Decisões importantes continuam sendo suas. O VOcare existe para aumentar clareza, não
             para eliminar a incerteza.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION 5B — COMO AS SUGESTÕES APARECEM */}
+      <section id="sugestoes" className="scroll-mt-16 px-5 py-16 sm:py-24">
+        <div className="mx-auto max-w-3xl">
+          <p className="eyebrow text-cian">Como as sugestões aparecem</p>
+          <h2 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl">
+            Suas respostas, dados abertos e nenhum veredito.
+          </h2>
+          <ol className="mt-8 space-y-5">
+            {suggestionSteps.map((step, index) => (
+              <li key={step} className="flex gap-4">
+                <span className="font-mono text-sm text-cian">0{index + 1}</span>
+                <p className="text-offwhite/80">{step}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-8 rounded-2xl border border-offwhite/12 bg-offwhite/5 p-5 text-sm text-offwhite/80">
+            Os dados do O*NET descrevem profissões nos Estados Unidos, e as perguntas ainda estão
+            sendo testadas com estudantes. Por isso as sugestões são pontos de partida para explorar
+            — não uma indicação do que você deve escolher. Empreendedorismo, produto digital e
+            relações internacionais ainda não têm dados confiáveis: não aparecem como sugestão, mas
+            continuam disponíveis para você explorar.
+          </p>
+          <p className="mt-6 text-xs text-offwhite/55">
+            Inclui informações do banco de dados O*NET 31.0, do U.S. Department of Labor, Employment
+            and Training Administration (USDOL/ETA), usadas sob a licença{" "}
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4"
+            >
+              CC BY 4.0
+            </a>{" "}
+            e adaptadas pelo VOcare. O*NET® é marca registrada do USDOL/ETA.
           </p>
         </div>
       </section>
