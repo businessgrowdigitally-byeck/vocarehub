@@ -14,6 +14,7 @@ export function SiteFooter() {
             { label: "Ser", to: "/ser" },
             { label: "Pensar", to: "/pensar" },
             { label: "Fazer", to: "/fazer" },
+            { label: "Sobre o VOcare", to: "/sobre" },
             { label: "Biblioteca", to: "/biblioteca" },
             { label: "Oportunidades", to: "/oportunidades" },
             { label: "Para escolas", to: "/escolas" },

@@ -1,16 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  BriefcaseBusiness,
+  GraduationCap,
+  Lightbulb,
+  Microscope,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import {
-  IconCursos,
-  IconConhecimento,
-  IconOportunidades,
-  IconProfissoes,
-} from "@/components/brand/BrandIcons";
+import { IconOportunidades } from "@/components/brand/BrandIcons";
 import { ResourceCard } from "@/features/resources/ResourceCard";
 import { OPPORTUNITY_SOURCES, type OpportunityCategory } from "@/data/opportunity-sources";
 import type { ResourceAccent, ResourceTone } from "@/features/resources/ResourceCard";
-import type { ReactElement } from "react";
 
 const title = "Oportunidades — VOcare";
 const description =
@@ -28,53 +30,68 @@ export const Route = createFileRoute("/oportunidades")({
   component: Oportunidades,
 });
 
-type IconComponent = (props: { className?: string }) => ReactElement;
-
 const SECTIONS: readonly {
   category: OpportunityCategory;
   number: string;
   title: string;
   description: string;
-  Icon: IconComponent;
+  Icon: LucideIcon;
   accent: ResourceAccent;
   tone: ResourceTone;
 }[] = [
   {
     category: "work",
     number: "01",
-    title: "Trabalho e estágio",
-    description:
-      "Programas de estágio, aprendizagem e portais de emprego para começar a trabalhar.",
-    Icon: IconProfissoes,
+    title: "Quero trabalhar",
+    description: "Portas de entrada para estágio, aprendizagem e emprego.",
+    Icon: BriefcaseBusiness,
     accent: "cian",
     tone: "light",
   },
   {
     category: "learning",
     number: "02",
-    title: "Cursos e formação",
-    description: "Cursos gratuitos e trilhas de formação profissional em diversas áreas.",
-    Icon: IconCursos,
+    title: "Quero aprender algo novo",
+    description: "Canais permanentes para procurar cursos e formação profissional.",
+    Icon: GraduationCap,
     accent: "solar",
     tone: "light",
   },
   {
-    category: "college",
+    category: "technical",
     number: "03",
-    title: "Ensino superior",
-    description: "Caminhos para faculdade: seleção, bolsas e financiamento estudantil.",
-    Icon: IconConhecimento,
+    title: "Quero fazer uma formação técnica",
+    description: "Caminhos públicos e modalidades para aprender uma profissão.",
+    Icon: Wrench,
+    accent: "cian",
+    tone: "light",
+  },
+  {
+    category: "college",
+    number: "04",
+    title: "Quero entrar na faculdade",
+    description: "Programas e bases oficiais para pesquisar com atenção.",
+    Icon: GraduationCap,
     accent: "terra",
     tone: "light",
   },
   {
     category: "science",
-    number: "04",
-    title: "Ciência e iniciação",
-    description: "Iniciação científica, olimpíadas e feiras para quem gosta de investigar.",
-    Icon: IconOportunidades,
+    number: "05",
+    title: "Quero experimentar ciência e projetos",
+    description: "Possibilidades menos conhecidas para transformar curiosidade em investigação.",
+    Icon: Microscope,
     accent: "solar",
     tone: "dark",
+  },
+  {
+    category: "projects",
+    number: "06",
+    title: "Quero criar um projeto",
+    description: "Recursos para transformar uma ideia em ação com iniciativa e planejamento.",
+    Icon: Lightbulb,
+    accent: "terra",
+    tone: "light",
   },
 ];
 
@@ -141,6 +158,7 @@ function Oportunidades() {
                 <ResourceCard
                   key={source.id}
                   title={source.title}
+                  {...(source.subtitle ? { subtitle: source.subtitle } : {})}
                   description={source.description}
                   href={source.href}
                   cta={source.cta}

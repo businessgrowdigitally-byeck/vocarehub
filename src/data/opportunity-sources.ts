@@ -12,9 +12,17 @@ import {
   type LibraryResource,
 } from "./library-resources.ts";
 
-export const OPPORTUNITY_CATEGORIES = ["work", "learning", "college", "science"] as const;
+export type OpportunityCategory =
+  "work" | "learning" | "technical" | "college" | "science" | "projects";
 
-export type OpportunityCategory = (typeof OPPORTUNITY_CATEGORIES)[number];
+export const OPPORTUNITY_CATEGORIES: readonly OpportunityCategory[] = [
+  "work",
+  "learning",
+  "technical",
+  "college",
+  "science",
+  "projects",
+];
 
 export type OpportunitySourceType = "official" | "institutional";
 
@@ -22,6 +30,7 @@ export interface OpportunitySource {
   id: string;
   category: OpportunityCategory;
   title: string;
+  subtitle?: string;
   description: string;
   note?: string;
   emphasis?: "eligibility" | "caution";
@@ -116,6 +125,47 @@ const WORK_OPPORTUNITIES: readonly OpportunitySource[] = [
     cta: "Acessar o portal",
     sourceType: "official",
   },
+  {
+    id: "unicef-1mio",
+    category: "work",
+    title: "1MiO — Um Milhão de Oportunidades",
+    subtitle: "Iniciativa do UNICEF e parceiros",
+    description:
+      "Iniciativa voltada à inclusão produtiva de adolescentes e jovens, conectando formação, aprendizagem, estágio, emprego e desenvolvimento profissional.",
+    note: "Conheça a iniciativa e consulte os canais indicados pelo UNICEF, sem presumir disponibilidade imediata de oportunidades.",
+    tags: ["Jovens", "Formação", "Trabalho", "UNICEF"],
+    href: "https://www.unicef.org/brazil/um-milhao-de-oportunidades-1mio-para-transformar-uma-geracao",
+    cta: "Conhecer a 1MiO ↗",
+    sourceType: "official",
+  },
+];
+
+const TECHNICAL_OPPORTUNITIES: readonly OpportunitySource[] = [
+  {
+    id: "rede-federal",
+    category: "technical",
+    title: "Rede Federal / Institutos Federais",
+    description:
+      "Instituições públicas que oferecem formação técnica, tecnológica e superior em diferentes regiões do Brasil.",
+    note: "Para quem ainda está no ensino médio, existem cursos técnicos integrados à educação básica, além de outras modalidades. Consulte cada instituição para conhecer a oferta local.",
+    tags: ["Ensino técnico", "Público", "Educação profissional", "Brasil"],
+    href: "https://www.gov.br/mec/pt-br/assuntos/ept/rede-federal",
+    cta: "Conhecer a Rede Federal ↗",
+    sourceType: "official",
+  },
+  {
+    id: "tipos-cursos-tecnicos",
+    category: "technical",
+    title: "Entenda os tipos de cursos técnicos",
+    subtitle: "Plataforma Nilo Peçanha / MEC",
+    description:
+      "Conheça diferenças entre modalidades como técnico integrado, concomitante, subsequente e outros tipos de formação profissional.",
+    note: "Muitas opções possuem nomes que não são óbvios para quem está escolhendo o próximo passo.",
+    tags: ["Curso técnico", "Ensino médio", "Formação"],
+    href: "https://pnp.mec.gov.br/tipos-de-curso",
+    cta: "Entender as modalidades ↗",
+    sourceType: "official",
+  },
 ];
 
 const COLLEGE_OPPORTUNITIES: readonly OpportunitySource[] = [
@@ -205,12 +255,29 @@ const SCIENCE_OPPORTUNITIES: readonly OpportunitySource[] = [
   },
 ];
 
+const PROJECT_OPPORTUNITIES: readonly OpportunitySource[] = [
+  {
+    id: "sebrae-cursos-online",
+    category: "projects",
+    title: "Sebrae — Aprenda a tirar ideias do papel",
+    description:
+      "Conteúdos e uma seleção de cursos gratuitos para desenvolver iniciativa, planejamento, projetos e noções de empreendedorismo.",
+    note: "Empreender é uma possibilidade, não uma obrigação. Confira a identificação e as condições de cada conteúdo no portal do Sebrae.",
+    tags: ["Projetos", "Iniciativa", "Empreendedorismo", "Aprendizado"],
+    href: "https://loja.sebrae.com.br/cursos/cursos-online",
+    cta: "Explorar conteúdos ↗",
+    sourceType: "institutional",
+  },
+];
+
 export const OPPORTUNITY_SOURCES: readonly OpportunitySource[] = [
   ...WORK_OPPORTUNITIES,
   ...LEARNING_AUTHORED,
   ...REUSED_LEARNING_OPPORTUNITIES,
+  ...TECHNICAL_OPPORTUNITIES,
   ...COLLEGE_OPPORTUNITIES,
   ...SCIENCE_OPPORTUNITIES,
+  ...PROJECT_OPPORTUNITIES,
 ];
 
 export function getOpportunitySourcesByCategory(

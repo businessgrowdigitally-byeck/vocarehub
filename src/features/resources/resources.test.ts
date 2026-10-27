@@ -83,16 +83,21 @@ describe("biblioteca — dados", () => {
 });
 
 describe("oportunidades — dados", () => {
-  it("reúne 12 fontes curadas + 4 recursos de aprendizagem reutilizados", () => {
+  it("reúne 16 fontes curadas + 4 recursos de aprendizagem reutilizados", () => {
     const reused = new Set<string>(LEARNING_RESOURCE_IDS);
     const authored = OPPORTUNITY_SOURCES.filter((source) => !reused.has(source.id));
-    assert.equal(authored.length, 12);
-    assert.equal(OPPORTUNITY_SOURCES.length, 16);
+    assert.equal(authored.length, 16);
+    assert.equal(OPPORTUNITY_SOURCES.length, 20);
     const ids = new Set(OPPORTUNITY_SOURCES.map((source) => source.id));
     assert.equal(ids.size, OPPORTUNITY_SOURCES.length);
   });
 
-  it("categorias e tipos de fonte são válidos", () => {
+  it("contains every supported opportunity pathway", () => {
+    const present = new Set(OPPORTUNITY_SOURCES.map((source) => source.category));
+    for (const category of OPPORTUNITY_CATEGORIES) {
+      assert.ok(present.has(category), `categoria sem fonte: ${category}`);
+    }
+
     const allowedCategories = new Set<string>(OPPORTUNITY_CATEGORIES);
     for (const source of OPPORTUNITY_SOURCES) {
       assert.ok(allowedCategories.has(source.category), `categoria inválida: ${source.category}`);
@@ -102,6 +107,36 @@ describe("oportunidades — dados", () => {
       );
       assert.match(source.href, /^https:\/\//, `${source.id} não é https`);
       assert.ok(source.tags.length > 0, `${source.id} sem tags`);
+    }
+  });
+
+  it("includes national technical, UNICEF, and project sources", () => {
+    const expected = {
+      "rede-federal": "www.gov.br",
+      "tipos-cursos-tecnicos": "pnp.mec.gov.br",
+      "unicef-1mio": "www.unicef.org",
+      "sebrae-cursos-online": "loja.sebrae.com.br",
+    } as const;
+
+    for (const [id, hostname] of Object.entries(expected)) {
+      const source = OPPORTUNITY_SOURCES.find((item) => item.id === id);
+
+      assert.ok(source, `${id} should be present`);
+      assert.equal(new URL(source.href).hostname, hostname);
+
+      assert.doesNotMatch(
+        `${source.description} ${source.note ?? ""}`,
+        /vaga garantida|disponibilidade imediata garantida|inscrições abertas/i,
+      );
+    }
+  });
+
+  it("does not store volatile fields", () => {
+    const volatile = ["deadline", "salary", "vacancies", "open", "applicationDate"];
+    for (const source of OPPORTUNITY_SOURCES) {
+      for (const key of volatile) {
+        assert.equal(key in source, false, `${source.id} expõe campo volátil: ${key}`);
+      }
     }
   });
 
