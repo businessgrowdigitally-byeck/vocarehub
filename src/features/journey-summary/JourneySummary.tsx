@@ -195,6 +195,13 @@ export function JourneySummary() {
                 >
                   Rever meu plano
                 </Link>
+                <Link
+                  to="/sugestoes"
+                  search={{ de: "/resumo" }}
+                  className="text-sm text-offwhite/60 underline underline-offset-4 hover:text-solar"
+                >
+                  O que achou do VOcare?
+                </Link>
                 <button
                   type="button"
                   onClick={restart}
