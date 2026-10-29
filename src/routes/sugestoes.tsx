@@ -1,15 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FeedbackPage } from "@/features/feedback/FeedbackPage";
-import { normalizePage } from "@/lib/feedback/feedback";
 
 const title = "Sugestões — VOcare";
-const description = "Mande uma sugestão, um problema ou um elogio para o VOcare. É anônimo.";
+const description =
+  "Mande uma sugestão, um problema ou um elogio para o VOcare pelo Instagram ou por e-mail.";
 
 export const Route = createFileRoute("/sugestoes")({
-  validateSearch: (search: Record<string, unknown>): { de?: string } => {
-    const de = normalizePage(search["de"]);
-    return de ? { de } : {};
-  },
   head: () => ({
     meta: [
       { title },
@@ -18,10 +14,5 @@ export const Route = createFileRoute("/sugestoes")({
       { property: "og:description", content: description },
     ],
   }),
-  component: SugestoesRoute,
+  component: FeedbackPage,
 });
-
-function SugestoesRoute() {
-  const { de } = Route.useSearch();
-  return <FeedbackPage from={de} />;
-}

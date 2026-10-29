@@ -9,6 +9,7 @@ import {
   isAnalyticsConfigured,
   readConsent,
 } from "@/lib/analytics/analytics";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contact/contact";
 
 export const PRIVACY_CONTACT_EMAIL = "vocare.institucional@gmail.com";
 export const PRIVACY_LAST_UPDATED = "28 de outubro de 2026";
@@ -117,21 +118,21 @@ export function PrivacyPage() {
             </p>
           </Section>
 
-          <Section title="Mensagens de sugestão">
+          <Section title="Sugestões por e-mail ou Instagram">
             <p>
-              Se você quiser, pode mandar uma sugestão, um problema ou um elogio pela página{" "}
-              <Link to="/sugestoes" className="text-solar underline underline-offset-4">
-                Dar sugestão
-              </Link>
-              . Guardamos só o que você envia: o tipo da mensagem, o texto, a nota (se você der), a
-              página de onde veio e a data. Não pedimos nome nem contato e não guardamos seu
-              endereço IP. A mensagem não fica ligada às suas respostas da jornada.
-            </p>
-            <p>
-              Por isso, não escreva dados pessoais na mensagem. Só a equipe do VOcare lê as
-              mensagens, que ficam guardadas no Supabase (nosso provedor de banco de dados) e são
-              apagadas depois de no máximo 12 meses. Se escreveu algo que quer apagar, mande um
-              e-mail dizendo a data aproximada e o que escreveu.
+              O VOcare não tem formulário de mensagens. Se você mandar uma sugestão por e-mail ou
+              pelo Instagram{" "}
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="text-solar underline underline-offset-4"
+              >
+                @{INSTAGRAM_HANDLE}
+              </a>
+              , usamos a mensagem só para entender sua sugestão e responder. Ela não é ligada às
+              suas respostas da jornada nem usada para publicidade. Não precisa mandar nome
+              completo, telefone ou escola. O Instagram tem suas próprias regras de privacidade.
             </p>
           </Section>
 

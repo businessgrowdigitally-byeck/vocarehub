@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { VoLogo } from "@/components/brand/VoLogo";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contact/contact";
 
 export function SiteFooter() {
   return (
@@ -37,6 +38,15 @@ export function SiteFooter() {
             className="underline underline-offset-2 hover:text-offwhite/80"
           >
             vocare.institucional@gmail.com
+          </a>{" "}
+          · Instagram{" "}
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2 hover:text-offwhite/80"
+          >
+            @{INSTAGRAM_HANDLE}
           </a>
         </p>
         <p className="mt-3 text-[11px] text-offwhite/35">

@@ -197,7 +197,6 @@ export function JourneySummary() {
                 </Link>
                 <Link
                   to="/sugestoes"
-                  search={{ de: "/resumo" }}
                   className="text-sm text-offwhite/60 underline underline-offset-4 hover:text-solar"
                 >
                   O que achou do VOcare?
