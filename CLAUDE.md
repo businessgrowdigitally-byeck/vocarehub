@@ -56,8 +56,9 @@ armazenamento de mensagens (decisão do responsável; um formulário com Supabas
 ## Para escolas
 
 `/escolas` fala com quem decide (parceria em 4 passos) e com o professor (guia em sala). O
-cartaz `public/cartaz-vocare.pdf` é gerado por `node scripts/build-poster.cjs` a partir de
-`scripts/poster/cartaz.html` (QR para vocarehub.vercel.app; troque ao mudar de domínio).
+cartaz (`public/cartaz-vocare.pdf`) e o roteiro de aula (`public/roteiro-de-aula-vocare.pdf`)
+são gerados por `node scripts/build-materials.cjs` a partir de `scripts/poster/*.html` (QR do
+cartaz para vocarehub.vercel.app; troque ao mudar de domínio).
 
 ## Guia visual
 

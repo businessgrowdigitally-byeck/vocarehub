@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Roteiro de aula VOcare</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=IBM+Plex+Mono:wght@500&display=swap"
+    />
+    <style>
+      /* Fundo branco e pouca área chapada: o roteiro é impresso em impressoras de escola. */
+      :root {
+        --amazon: oklch(0.204 0.038 174.2);
+        --solar: oklch(0.845 0.156 87.3);
+        --terra: oklch(0.617 0.121 39.6);
+        --cian: oklch(0.735 0.132 199.3);
+        --offwhite: oklch(0.958 0.014 91.5);
+        --ink: oklch(0.14 0 0);
+        --muted: oklch(0.14 0 0 / 0.68);
+      }
+      @page {
+        size: A4;
+        margin: 14mm 16mm 16mm;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+        font-size: 9.8pt;
+        line-height: 1.4;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 0.4mm solid oklch(0.14 0 0 / 0.15);
+        padding-bottom: 4mm;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 2mm;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 15pt;
+        color: var(--amazon);
+      }
+      .logo svg {
+        width: 8mm;
+        height: 7.5mm;
+      }
+      .tag,
+      .eyebrow {
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 500;
+        font-size: 7.5pt;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--terra);
+      }
+      h1 {
+        margin-top: 5mm;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24pt;
+        line-height: 1.05;
+        color: var(--amazon);
+      }
+      .lead {
+        margin-top: 3mm;
+        font-size: 11.5pt;
+        color: var(--muted);
+        max-width: 160mm;
+      }
+      h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 14pt;
+        color: var(--amazon);
+        margin-top: 5mm;
+      }
+      h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 11pt;
+        margin-top: 4mm;
+      }
+      p + p {
+        margin-top: 2mm;
+      }
+      ul {
+        margin-top: 2mm;
+        padding-left: 5mm;
+      }
+      li + li {
+        margin-top: 1.2mm;
+      }
+      .facts {
+        margin-top: 5mm;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3mm;
+      }
+      .fact {
+        border-top: 0.8mm solid var(--solar);
+        padding-top: 2mm;
+      }
+      .fact b {
+        display: block;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 12pt;
+        color: var(--amazon);
+      }
+      .fact span {
+        font-size: 9pt;
+        color: var(--muted);
+      }
+      .box {
+        margin-top: 3mm;
+        border: 0.35mm solid oklch(0.14 0 0 / 0.15);
+        border-radius: 3mm;
+        padding: 3mm 4mm;
+        break-inside: avoid;
+      }
+      .box.note {
+        border-color: var(--solar);
+        background: oklch(0.845 0.156 87.3 / 0.12);
+      }
+      .lesson {
+        break-before: page;
+      }
+      .lesson-head {
+        display: flex;
+        align-items: baseline;
+        gap: 4mm;
+        border-top: 1.2mm solid var(--c);
+        padding-top: 3mm;
+      }
+      .lesson-head .phase {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 22pt;
+        color: var(--amazon);
+      }
+      .lesson-head .meta {
+        color: var(--muted);
+        font-size: 10pt;
+      }
+      .goal {
+        margin-top: 2mm;
+        font-size: 11pt;
+      }
+      table {
+        width: 100%;
+        margin-top: 4mm;
+        border-collapse: collapse;
+        break-inside: avoid;
+      }
+      td {
+        vertical-align: top;
+        padding: 2.6mm 0;
+        border-top: 0.3mm solid oklch(0.14 0 0 / 0.12);
+      }
+      td.t {
+        width: 24mm;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 9pt;
+        color: var(--terra);
+        padding-right: 3mm;
+      }
+      td b {
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .q {
+        font-style: italic;
+      }
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4mm;
+      }
+      .say b {
+        color: oklch(0.45 0.12 150);
+      }
+      .avoid b {
+        color: var(--terra);
+      }
+      .foot {
+        margin-top: 8mm;
+        border-top: 0.4mm solid oklch(0.14 0 0 / 0.15);
+        padding-top: 3mm;
+        font-size: 9pt;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="head">
+      <div class="logo">
+        <svg viewBox="0 0 48 44" aria-hidden="true">
+          <path d="M2 2h14l8 26-7 14L2 2Z" fill="var(--amazon)" />
+          <path d="M46 2H32l-8 26 7 14L46 2Z" fill="var(--solar)" />
+        </svg>
+        VOcare
+      </div>
+      <span class="tag">Material de apoio · Professor</span>
+    </div>
+
+    <h1>Roteiro de aula</h1>
+    <p class="lead">
+      Um caminho simples para aplicar o VOcare com a turma em três aulas — uma para cada fase. O
+      VOcare não diz qual profissão escolher: ele ajuda cada estudante a se conhecer, explorar
+      possibilidades e dar um primeiro passo.
+    </p>
+
+    <div class="facts">
+      <div class="fact"><b>15 a 18 anos</b><span>Ensino médio</span></div>
+      <div class="fact"><b>3 aulas</b><span>De cerca de 50 minutos</span></div>
+      <div class="fact"><b>Celular</b><span>Com internet; sem cadastro</span></div>
+      <div class="fact"><b>Gratuito</b><span>vocarehub.vercel.app</span></div>
+    </div>
+
+    <h2>Antes da primeira aula</h2>
+    <ul>
+      <li>
+        Faça a jornada você mesmo em <b>vocarehub.vercel.app</b> (uns 20 minutos). Fica muito mais
+        fácil tirar dúvidas.
+      </li>
+      <li>Imprima e afixe o cartaz do VOcare na sala — o QR code leva direto ao site.</li>
+      <li>
+        Peça para a turma trazer o celular carregado. Se alguém não tiver, forme duplas: os dois
+        usam o mesmo celular em <b>navegadores diferentes</b> (por exemplo, Chrome e o navegador
+        padrão do aparelho), porque cada navegador guarda uma jornada só.
+      </li>
+      <li>
+        O guia ilustrado em <b>vocarehub.vercel.app/como-usar</b> mostra cada tela. Vale projetar no
+        primeiro dia.
+      </li>
+    </ul>
+
+    <div class="box note">
+      <h3 style="margin-top: 0">Importante: o progresso fica no aparelho</h3>
+      <p>
+        Não existe conta. As respostas ficam salvas no navegador do próprio celular — por isso cada
+        estudante deve usar <b>o mesmo aparelho e o mesmo navegador</b> nas três aulas. Em
+        computadores compartilhados (laboratório), prefira fazer tudo em uma aula só e, no fim,
+        baixar o Passaporte e tocar em <b>Começar uma nova jornada</b> para apagar as respostas
+        daquele computador.
+      </p>
+    </div>
+
+    <h2>Privacidade dos estudantes</h2>
+    <p>
+      As respostas não são enviadas para ninguém — nem para a escola, nem para o VOcare. O professor
+      não tem acesso a elas. Compartilhar o Mapa, os caminhos ou o Passaporte com a turma é sempre
+      opcional: convide, nunca exija. O nome no Passaporte também é opcional.
+    </p>
+
+    <div style="break-inside: avoid">
+      <h2>Como mediar</h2>
+      <div class="two">
+        <div class="box say">
+          <h3 style="margin-top: 0"><b>Diga</b></h3>
+          <ul>
+            <li>
+              "Não tem resposta certa. Responda pelo que te atrai, não pelo que você sabe fazer."
+            </li>
+            <li>"O Mapa é um retrato de agora. Ele pode mudar — e tudo bem."</li>
+            <li>"As sugestões são pontos de partida para explorar."</li>
+            <li>"Qual caminho te deixou curioso? Por quê?"</li>
+          </ul>
+        </div>
+        <div class="box avoid">
+          <h3 style="margin-top: 0"><b>Evite</b></h3>
+          <ul>
+            <li>"O teste mostrou qual é a sua profissão."</li>
+            <li>Comparar resultados entre estudantes ou fazer ranking.</li>
+            <li>Dizer que um caminho é "melhor" ou "dá mais dinheiro".</li>
+            <li>Pedir para todos lerem o Mapa em voz alta.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 1 -->
+    <section class="lesson" style="--c: var(--solar)">
+      <div class="lesson-head">
+        <span class="phase">Aula 1 · SER</span><span class="meta">cerca de 50 min</span>
+      </div>
+      <p class="goal">
+        <b>Objetivo:</b> cada estudante olha para os próprios interesses, forças e valores e termina
+        com o seu Mapa.
+      </p>
+      <table>
+        <tr>
+          <td class="t">0–10 min</td>
+          <td>
+            <b>Abertura.</b> Em vez de perguntar "o que você quer ser?", pergunte
+            <span class="q">"O que você faria numa tarde livre sem ninguém mandar?"</span>. Ouça
+            algumas respostas. Explique o VOcare em uma frase: um caminho para se conhecer e
+            explorar possibilidades — não um teste com nota.
+          </td>
+        </tr>
+        <tr>
+          <td class="t">10–35 min</td>
+          <td>
+            <b>Jornada SER.</b> A turma acessa o site (QR do cartaz ou endereço) e toca em
+            <b>Comece por você</b>. São 30 perguntas rápidas em 5 partes (uns 5 minutos), depois a
+            escolha de 2 a 5 forças, 3 valores e algumas preferências de trabalho. Circule pela sala
+            e lembre: responder pelo que atrai, não pelo que já sabe fazer.
+          </td>
+        </tr>
+        <tr>
+          <td class="t">35–45 min</td>
+          <td>
+            <b>Conversa em duplas.</b> Cada um olha o próprio Mapa e conta ao colega, se quiser:
+            <ul>
+              <li class="q">Algum tema do Mapa te surpreendeu?</li>
+              <li class="q">Em que momento da sua vida esse interesse aparece?</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="t">45–50 min</td>
+          <td>
+            <b>Fechamento.</b> Reforce que o Mapa é um retrato de agora. Lembre a turma de trazer o
+            mesmo celular na próxima aula.
+          </td>
+        </tr>
+      </table>
+
+      <div class="box">
+        <h3 style="margin-top: 0">Se alguém terminar antes</h3>
+        <p>
+          Peça para anotar no caderno uma situação real em que usou uma das forças que escolheu.
+        </p>
+      </div>
+    </section>
+
+    <!-- AULA 2 -->
+    <section class="lesson" style="--c: var(--cian)">
+      <div class="lesson-head">
+        <span class="phase">Aula 2 · PENSAR</span><span class="meta">cerca de 50 min</span>
+      </div>
+      <p class="goal">
+        <b>Objetivo:</b> explorar caminhos com curiosidade e escolher 3 para investigar melhor.
+      </p>
+      <table>
+        <tr>
+          <td class="t">0–5 min</td>
+          <td>
+            <b>Retomada.</b> Peça uma palavra que resuma o Mapa de cada um (quem quiser falar).
+          </td>
+        </tr>
+        <tr>
+          <td class="t">5–25 min</td>
+          <td>
+            <b>Explorar.</b> No PENSAR aparecem até 6 caminhos parecidos com os interesses de cada
+            um, e cada sugestão explica por que aparece. Incentive a turma a ler essas explicações,
+            a abrir também <b>todas as áreas</b> e a salvar pelo menos 3 caminhos que despertem
+            curiosidade — inclusive fora das sugestões.
+          </td>
+        </tr>
+        <tr>
+          <td class="t">25–40 min</td>
+          <td>
+            <b>Escolher e comparar.</b> Cada estudante escolhe 3 caminhos salvos e compara os três
+            na tela. Em trios, cada um apresenta um deles:
+            <ul>
+              <li class="q">O que esse caminho faz no dia a dia?</li>
+              <li class="q">O que te atraiu nele? O que você ainda não sabe?</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="t">40–50 min</td>
+          <td>
+            <b>Fechamento.</b> Pergunte quem descobriu um caminho que nem conhecia. Lembre que
+            explorar não é decidir: na próxima aula, cada um vai experimentar um deles na prática.
+          </td>
+        </tr>
+      </table>
+
+      <div class="box note">
+        <h3 style="margin-top: 0">Se um estudante disser "não apareceu nada a ver comigo"</h3>
+        <p>
+          Acontece, principalmente com quem respondeu tudo de forma parecida. Mostre o botão para
+          abrir todas as áreas: qualquer caminho pode ser salvo e escolhido. As sugestões são um
+          ponto de partida, não uma regra.
+        </p>
+      </div>
+    </section>
+
+    <!-- AULA 3 -->
+    <section class="lesson" style="--c: var(--terra)">
+      <div class="lesson-head">
+        <span class="phase">Aula 3 · FAZER</span><span class="meta">cerca de 50 min</span>
+      </div>
+      <p class="goal">
+        <b>Objetivo:</b> transformar a curiosidade em uma ação pequena, com data, e registrar a
+        jornada no Passaporte.
+      </p>
+      <table>
+        <tr>
+          <td class="t">0–5 min</td>
+          <td>
+            <b>Abertura.</b>
+            <span class="q"
+              >"Qual é o menor passo possível para conhecer melhor uma profissão?"</span
+            >
+            Ouça ideias.
+          </td>
+        </tr>
+        <tr>
+          <td class="t">5–25 min</td>
+          <td>
+            <b>Missão.</b> No FAZER, cada estudante escolhe um dos seus caminhos e uma missão — por
+            exemplo um mini-projeto, conversar com alguém da área, uma aula introdutória ou conhecer
+            um lugar — e marca um prazo. Incentive missões possíveis de verdade nas próximas
+            semanas.
+          </td>
+        </tr>
+        <tr>
+          <td class="t">25–40 min</td>
+          <td>
+            <b>Compromisso em voz alta.</b> Quem quiser compartilha a missão e a data. Peça que a
+            turma ajude com contatos ou ideias (alguém conhece uma pessoa da área?).
+          </td>
+        </tr>
+        <tr>
+          <td class="t">40–50 min</td>
+          <td>
+            <b>Passaporte.</b> Cada estudante baixa o Passaporte em PDF (o nome é opcional) e guarda
+            no celular. Combine uma data para a turma contar como foi a missão.
+          </td>
+        </tr>
+      </table>
+
+      <h2>Depois das três aulas</h2>
+      <ul>
+        <li>
+          Na data combinada, reserve 15 minutos para quem quiser contar como foi a missão. O que deu
+          certo? O que mudou na forma de ver aquele caminho?
+        </li>
+        <li>A jornada pode ser refeita a qualquer momento: interesses mudam, e isso faz parte.</li>
+      </ul>
+
+      <h2>Só tem uma aula?</h2>
+      <p>
+        Dá para fazer uma versão curta em 50 minutos: <b>SER</b> (20 min), <b>PENSAR</b> (15 min),
+        <b>FAZER e Passaporte</b> (10 min) e 5 minutos de conversa no fim. Os estudantes podem
+        continuar em casa, no mesmo celular.
+      </p>
+
+      <div class="foot">
+        <span>Dúvidas ou sugestões: vocare.institucional@gmail.com · Instagram @vocare.hub</span>
+        <span>vocarehub.vercel.app</span>
+      </div>
+    </section>
+  </body>
+</html>
