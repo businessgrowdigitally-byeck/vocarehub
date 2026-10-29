@@ -2,6 +2,9 @@
 //
 // Uso: node scripts/build-poster.cjs
 //
+// Requer Playwright com Chromium, que não é dependência do projeto (pesaria em todo build da
+// Vercel). Uma vez só: npm i --no-save playwright && npx playwright install chromium
+//
 // O QR code está embutido no HTML e aponta para https://vocarehub.vercel.app. Ao trocar de
 // domínio, gere um SVG novo (ex.: biblioteca "qrcode" do Python, SvgPathImage, border=0),
 // substitua o <svg> dentro de .qr e o texto .url no HTML, e rode este script de novo.
