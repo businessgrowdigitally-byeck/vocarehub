@@ -10,9 +10,9 @@ Jornada: **SER** (interesses, forças, valores, preferências) → **PENSAR** (c
 ## Stack
 
 TanStack Start + React 19, Tailwind 4, Vite. Projeto conectado ao Lovable (veja `AGENTS.md`:
-não reescreva histórico publicado). Deploy na Vercel a partir de `main`. Sem login e sem
-banco de dados no MVP: a jornada fica no `localStorage` (`src/lib/journey/`, chave
-`vocare:journey:v2`). Não adicione autenticação, Supabase ou backend sem pedido explícito.
+não reescreva histórico publicado). Deploy na Vercel a partir de `main`. Sem login de usuário: a jornada fica no `localStorage`
+(`src/lib/journey/`, chave `vocare:journey:v2`). O único uso de banco é o feedback (abaixo).
+Não adicione autenticação, outras tabelas ou backend sem pedido explícito.
 
 ## Onde fica o quê
 
@@ -45,6 +45,15 @@ nome do certificado — o público é menor de idade.
   atualize a página e a data. Contato: vocare.institucional@gmail.com (BGD Systems).
 - Imagem de compartilhamento: `public/og-image.png` (1200×630). A URL absoluta usa
   `SITE_URL` em `src/routes/__root.tsx` — troque ao adotar domínio próprio.
+
+## Feedback
+
+`/sugestoes` recebe mensagens anônimas (tipo, texto, nota opcional, página de origem) e
+`/admin/feedback` lista tudo, protegido por senha. Código em `src/lib/feedback/` (servidor em
+`feedback.functions.ts`, só via service role) e `src/features/feedback/`; tabela em
+`supabase/migrations/*_feedback.sql`, sem políticas para anon. Variáveis na Vercel:
+`SUPABASE_SERVICE_ROLE_KEY` e `ADMIN_PASSWORD` (12+ caracteres). Nunca peça nome, e-mail ou
+IP; retenção de 12 meses (apagado ao abrir o admin).
 
 ## Guia visual
 

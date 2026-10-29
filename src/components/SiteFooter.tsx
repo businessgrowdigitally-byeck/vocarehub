@@ -19,6 +19,7 @@ export function SiteFooter() {
             { label: "Biblioteca", to: "/biblioteca" },
             { label: "Oportunidades", to: "/oportunidades" },
             { label: "Para escolas", to: "/escolas" },
+            { label: "Dar sugestão", to: "/sugestoes" },
             { label: "Privacidade", to: "/privacidade" },
           ].map((l) => (
             <Link key={l.to} to={l.to} className="eyebrow text-offwhite/60 hover:text-solar">

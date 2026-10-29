@@ -32,6 +32,36 @@ export type Database = {
         };
         Relationships: [];
       };
+      feedback: {
+        Row: {
+          created_at: string;
+          id: string;
+          kind: string;
+          message: string;
+          page: string | null;
+          rating: number | null;
+          read_at: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          kind: string;
+          message: string;
+          page?: string | null;
+          rating?: number | null;
+          read_at?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          message?: string;
+          page?: string | null;
+          rating?: number | null;
+          read_at?: string | null;
+        };
+        Relationships: [];
+      };
       user_roles: {
         Row: {
           created_at: string;
