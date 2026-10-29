@@ -21,7 +21,6 @@ import { Route as ResumoRouteImport } from './routes/resumo'
 import { Route as SerRouteImport } from './routes/ser'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SugestoesRouteImport } from './routes/sugestoes'
-import { Route as AdminFeedbackRouteImport } from './routes/admin.feedback'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -83,11 +82,6 @@ const SugestoesRoute = SugestoesRouteImport.update({
   path: '/sugestoes',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminFeedbackRoute = AdminFeedbackRouteImport.update({
-  id: '/admin/feedback',
-  path: '/admin/feedback',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -102,7 +96,6 @@ export interface FileRoutesByFullPath {
   '/ser': typeof SerRoute
   '/sobre': typeof SobreRoute
   '/sugestoes': typeof SugestoesRoute
-  '/admin/feedback': typeof AdminFeedbackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,7 +110,6 @@ export interface FileRoutesByTo {
   '/ser': typeof SerRoute
   '/sobre': typeof SobreRoute
   '/sugestoes': typeof SugestoesRoute
-  '/admin/feedback': typeof AdminFeedbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,7 +125,6 @@ export interface FileRoutesById {
   '/ser': typeof SerRoute
   '/sobre': typeof SobreRoute
   '/sugestoes': typeof SugestoesRoute
-  '/admin/feedback': typeof AdminFeedbackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,7 +141,6 @@ export interface FileRouteTypes {
     | '/ser'
     | '/sobre'
     | '/sugestoes'
-    | '/admin/feedback'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -165,7 +155,6 @@ export interface FileRouteTypes {
     | '/ser'
     | '/sobre'
     | '/sugestoes'
-    | '/admin/feedback'
   id:
     | '__root__'
     | '/'
@@ -180,7 +169,6 @@ export interface FileRouteTypes {
     | '/ser'
     | '/sobre'
     | '/sugestoes'
-    | '/admin/feedback'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,7 +184,6 @@ export interface RootRouteChildren {
   SerRoute: typeof SerRoute
   SobreRoute: typeof SobreRoute
   SugestoesRoute: typeof SugestoesRoute
-  AdminFeedbackRoute: typeof AdminFeedbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -285,13 +272,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SugestoesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/feedback': {
-      id: '/admin/feedback'
-      path: '/admin/feedback'
-      fullPath: '/admin/feedback'
-      preLoaderRoute: typeof AdminFeedbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -308,7 +288,6 @@ const rootRouteChildren: RootRouteChildren = {
   SerRoute: SerRoute,
   SobreRoute: SobreRoute,
   SugestoesRoute: SugestoesRoute,
-  AdminFeedbackRoute: AdminFeedbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
