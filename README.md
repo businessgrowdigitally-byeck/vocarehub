@@ -193,7 +193,7 @@ Cards do arco (01/02/03), quando aparecerem juntos (ex: na home ou em uma págin
 
 Tom de voz no copy próprio do Lovable (fora dos embeds)
 
-Direto, convidativo, nunca impositivo. Frases curtas, no estilo dos exemplos do brandbook: "Existe mais de um caminho.", "Você tem mais possibilidades do que imagina.", "O futuro não é uma resposta. É uma possibilidade."" no final, adicione bem pequeno, feito por BGD Systems com link para <https://www.bgdsystems.com.br/>
+Direto, convidativo, nunca impositivo. Frases curtas, no estilo dos exemplos do brandbook: "Existe mais de um caminho.", "Você tem mais possibilidades do que imagina.", "O futuro não é uma resposta. É uma possibilidade."" no final, adicione bem pequeno, "Desenvolvido por VOcare"
 
 This project was built with [Lovable](https://lovable.dev).
 

@@ -1,5 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Compass, Instagram, Lock, Mail, Sparkles, Users } from "lucide-react";
+import {
+  ArrowRight,
+  Compass,
+  Download,
+  Handshake,
+  Instagram,
+  Lock,
+  Mail,
+  Sparkles,
+  Users,
+} from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -18,8 +28,8 @@ const REASONS = [
   },
   {
     Icon: Lock,
-    title: "Sem cadastro e sem dados pessoais",
-    text: "As respostas ficam no próprio dispositivo do estudante e nunca são enviadas. Sem conta, sem cadastro.",
+    title: "Sem risco para a escola",
+    text: "As respostas ficam no próprio dispositivo do estudante e nunca são enviadas a lugar nenhum. Sem conta, sem cadastro, sem dado pessoal para a escola gerenciar ou se responsabilizar.",
   },
   {
     Icon: Users,
@@ -28,6 +38,37 @@ const REASONS = [
   },
 ];
 
+/** Para quem decide (coordenação/direção): como a parceria acontece. */
+const PARTNERSHIP_STEPS = [
+  {
+    num: "01",
+    title: "Entre em contato",
+    text: "Mande uma mensagem por e-mail ou Instagram contando um pouco sobre sua escola.",
+  },
+  {
+    num: "02",
+    title: "Conversa rápida de 15 minutos",
+    text: "Alinhamos como o VOcare se encaixa na rotina da sua escola, sem compromisso.",
+  },
+  {
+    num: "03",
+    title: "Receba o material de apoio",
+    text: "Cartaz para imprimir, roteiro de aula e tudo que você precisa para divulgar.",
+  },
+  {
+    num: "04",
+    title: "Divulgue para os alunos",
+    text: "Pronto — seus estudantes já podem começar, no próprio ritmo deles.",
+  },
+];
+
+const POSTER_PATH = "/cartaz-vocare.pdf";
+
+function ResponseTime({ className }: { className?: string }) {
+  return <p className={className}>Resposta em até 3 dias úteis.</p>;
+}
+
+/** Para quem aplica em sala: o guia do professor. */
 const STEPS = [
   {
     num: "01",
@@ -77,6 +118,7 @@ export function EscolasPage() {
               Falar sobre uma parceria
             </a>
           </div>
+          <ResponseTime className="mt-3 text-xs text-offwhite/55" />
         </div>
       </section>
 
@@ -95,8 +137,45 @@ export function EscolasPage() {
         </div>
       </section>
 
+      <section className="px-5 pb-16" aria-labelledby="parceria-titulo">
+        <div className="mx-auto max-w-6xl">
+          <span className="inline-flex items-center gap-2">
+            <Handshake className="h-4 w-4 text-solar" aria-hidden="true" />
+            <span className="eyebrow text-solar">COMO FORMALIZAR A PARCERIA</span>
+          </span>
+          <h2
+            id="parceria-titulo"
+            className="mt-3 max-w-2xl font-display text-3xl font-bold text-offwhite"
+          >
+            Como trazer o VOcare para a sua escola
+          </h2>
+          <ol className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {PARTNERSHIP_STEPS.map((step) => (
+              <li key={step.num} className="border-t border-offwhite/15 pt-5">
+                <span className="font-mono text-sm text-solar">{step.num}</span>
+                <h3 className="mt-3 font-display text-xl font-bold text-offwhite">{step.title}</h3>
+                <p className="mt-2 text-sm text-offwhite/70">{step.text}</p>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3">
+            <a
+              href={partnershipMailto()}
+              className="tap inline-flex items-center gap-2 rounded-full border border-offwhite/25 px-6 py-3.5 text-sm text-offwhite/85 transition-colors hover:bg-offwhite/10"
+            >
+              <Mail className="h-4 w-4" aria-hidden="true" />
+              Falar sobre uma parceria
+            </a>
+            <ResponseTime className="text-xs text-offwhite/55" />
+          </div>
+        </div>
+      </section>
+
       <section className="bg-offwhite px-5 py-16 text-ink">
         <div className="mx-auto max-w-6xl">
+          <p className="mb-3 text-sm text-ink/60">
+            Depois da parceria combinada — guia rápido para o professor
+          </p>
           <span className="inline-flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-terra" aria-hidden="true" />
             <span className="eyebrow text-terra">TRÊS FASES, UM PERCURSO</span>
@@ -122,13 +201,23 @@ export function EscolasPage() {
             É gratuito, funciona no navegador e não exige nenhum cadastro. Comece pela fase SER e
             descubra o percurso completo.
           </p>
-          <Link
-            to="/ser"
-            className="tap mt-6 inline-flex items-center gap-2 rounded-full bg-solar px-7 py-3.5 font-display font-bold text-ink transition-transform hover:-translate-y-0.5"
-          >
-            Começar agora
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <a
+              href={POSTER_PATH}
+              download
+              className="tap inline-flex items-center gap-2 rounded-full border border-offwhite/25 px-6 py-3.5 text-sm text-offwhite/85 transition-colors hover:bg-offwhite/10"
+            >
+              <Download className="h-4 w-4" aria-hidden="true" />
+              Baixar cartaz para imprimir
+            </a>
+            <Link
+              to="/ser"
+              className="tap inline-flex items-center gap-2 rounded-full bg-solar px-7 py-3.5 font-display font-bold text-ink transition-transform hover:-translate-y-0.5"
+            >
+              Começar agora
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
           <div className="mt-8 border-t border-offwhite/15 pt-6">
             <h3 className="font-display text-lg font-bold text-offwhite">
               Quer usar com a sua escola?
@@ -153,6 +242,7 @@ export function EscolasPage() {
                 <Instagram className="h-4 w-4 shrink-0" aria-hidden="true" />@{INSTAGRAM_HANDLE}
               </a>
             </div>
+            <ResponseTime className="mt-3 text-xs text-offwhite/55" />
           </div>
         </div>
       </section>
