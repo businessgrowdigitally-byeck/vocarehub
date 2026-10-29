@@ -49,17 +49,7 @@ export function SiteFooter() {
             @{INSTAGRAM_HANDLE}
           </a>
         </p>
-        <p className="mt-3 text-[11px] text-offwhite/35">
-          feito por{" "}
-          <a
-            href="https://www.bgdsystems.com.br/"
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-2 hover:text-offwhite/70"
-          >
-            BGD Systems
-          </a>
-        </p>
+        <p className="mt-3 text-[11px] text-offwhite/35">Desenvolvido por VOcare</p>
       </div>
     </footer>
   );

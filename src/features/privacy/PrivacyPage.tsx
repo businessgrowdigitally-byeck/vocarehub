@@ -12,7 +12,7 @@ import {
 import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contact/contact";
 
 export const PRIVACY_CONTACT_EMAIL = "vocare.institucional@gmail.com";
-export const PRIVACY_LAST_UPDATED = "28 de outubro de 2026";
+export const PRIVACY_LAST_UPDATED = "29 de outubro de 2026";
 
 const CONSENT_LABELS: Record<AnalyticsConsent, string> = {
   granted: "Você aceitou o analytics neste navegador.",
@@ -89,9 +89,9 @@ export function PrivacyPage() {
 
           <Section title="Quem é responsável">
             <p>
-              O VOcare é mantido pela <strong>BGD Systems</strong>, responsável pelo tratamento dos
-              dados descritos nesta política. Para qualquer dúvida ou pedido sobre seus dados,
-              escreva para{" "}
+              A <strong>equipe do VOcare</strong> é a responsável pelo tratamento dos dados
+              descritos nesta política. Para qualquer dúvida ou pedido sobre seus dados, escreva
+              para{" "}
               <a
                 href={`mailto:${PRIVACY_CONTACT_EMAIL}`}
                 className="text-solar underline underline-offset-4"

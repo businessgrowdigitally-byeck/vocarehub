@@ -1,7 +1,8 @@
 // Gera as capturas do guia /como-usar (public/guia/*.jpg) com destaques numerados.
 // Uso: com `npx vite dev --port 5173` rodando, execute
 //   node scripts/capture-guide.cjs public/guia
-// Requer Playwright com Chromium. Rode de novo sempre que as telas mudarem.
+// Requer Playwright com Chromium (uma vez só: npm i --no-save playwright && npx playwright
+// install chromium). Rode de novo sempre que as telas mudarem.
 
 const { chromium } = require("playwright");
 const OUT = process.argv[2];

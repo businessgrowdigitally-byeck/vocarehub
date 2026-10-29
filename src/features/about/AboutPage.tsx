@@ -463,18 +463,7 @@ export function AboutPage() {
             O VOcare é uma iniciativa educacional criada para ampliar o acesso de jovens a
             orientação, referências e oportunidades.
           </p>
-          <p className="mt-5 text-offwhite/60">
-            Desenvolvido por{" "}
-            <a
-              href="https://www.bgdsystems.com.br/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-offwhite/90"
-            >
-              BGD Systems
-              <span className="sr-only"> (abre em nova aba)</span>
-            </a>
-          </p>
+          <p className="mt-5 text-offwhite/60">Desenvolvido por VOcare</p>
         </div>
       </section>
 

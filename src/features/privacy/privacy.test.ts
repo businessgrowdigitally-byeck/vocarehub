@@ -14,7 +14,7 @@ test("registra /privacidade e o expõe no rodapé e no aviso de analytics", () =
 });
 
 test("identifica o responsável e um contato", () => {
-  assert.ok(page.includes("BGD Systems"));
+  assert.ok(page.includes("equipe do VOcare"));
   assert.ok(page.includes("vocare.institucional@gmail.com"));
   assert.ok(footer.includes("vocare.institucional@gmail.com"));
 });

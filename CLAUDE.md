@@ -42,7 +42,8 @@ nome do certificado — o público é menor de idade.
 ## Privacidade e compartilhamento
 
 - `/privacidade` descreve exatamente o que o código coleta; ao mudar analytics ou dados,
-  atualize a página e a data. Contato: vocare.institucional@gmail.com (BGD Systems).
+  atualize a página e a data. Contato: vocare.institucional@gmail.com.
+- Créditos: "Desenvolvido por VOcare". Não mencione nem linke a agência que desenvolveu.
 - Imagem de compartilhamento: `public/og-image.png` (1200×630). A URL absoluta usa
   `SITE_URL` em `src/routes/__root.tsx` — troque ao adotar domínio próprio.
 
@@ -51,6 +52,12 @@ nome do certificado — o público é menor de idade.
 `/sugestoes` (`src/features/feedback/`) só aponta para o Instagram @vocare.hub e para o
 e-mail, com assunto pronto. Contatos em `src/lib/contact/contact.ts`. Não há formulário nem
 armazenamento de mensagens (decisão do responsável; um formulário com Supabase foi removido).
+
+## Para escolas
+
+`/escolas` fala com quem decide (parceria em 4 passos) e com o professor (guia em sala). O
+cartaz `public/cartaz-vocare.pdf` é gerado por `node scripts/build-poster.cjs` a partir de
+`scripts/poster/cartaz.html` (QR para vocarehub.vercel.app; troque ao mudar de domínio).
 
 ## Guia visual
 
