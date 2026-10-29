@@ -1,8 +1,14 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Compass, Lock, Sparkles, Users } from "lucide-react";
+import { ArrowRight, Compass, Instagram, Lock, Mail, Sparkles, Users } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import {
+  CONTACT_EMAIL,
+  INSTAGRAM_HANDLE,
+  INSTAGRAM_URL,
+  partnershipMailto,
+} from "@/lib/contact/contact";
 
 const REASONS = [
   {
@@ -53,7 +59,7 @@ export function EscolasPage() {
           </h1>
           <p className="mt-5 max-w-xl text-offwhite/75">
             O VOcare é um portal aberto que ajuda jovens de 15 a 18 anos a se conhecerem, explorarem
-            caminhos e darem o primeiro passo — sem cadastro e sem coleta de dados.
+            caminhos e darem o primeiro passo — sem cadastro e sem pedir dados pessoais.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
@@ -64,11 +70,10 @@ export function EscolasPage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href="https://www.bgdsystems.com.br/"
-              target="_blank"
-              rel="noreferrer"
+              href={partnershipMailto()}
               className="tap inline-flex items-center gap-2 rounded-full border border-offwhite/25 px-6 py-3.5 text-sm text-offwhite/85 transition-colors hover:bg-offwhite/10"
             >
+              <Mail className="h-4 w-4" aria-hidden="true" />
               Falar sobre uma parceria
             </a>
           </div>
@@ -124,6 +129,31 @@ export function EscolasPage() {
             Começar agora
             <ArrowRight className="h-4 w-4" />
           </Link>
+          <div className="mt-8 border-t border-offwhite/15 pt-6">
+            <h3 className="font-display text-lg font-bold text-offwhite">
+              Quer usar com a sua escola?
+            </h3>
+            <p className="mt-1 text-sm text-offwhite/75">
+              Fale com a equipe do VOcare. Respondemos por e-mail ou pelo Instagram.
+            </p>
+            <div className="mt-4 flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:gap-6">
+              <a
+                href={partnershipMailto()}
+                className="inline-flex items-center gap-2 text-solar underline underline-offset-4"
+              >
+                <Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
+                <span className="break-all">{CONTACT_EMAIL}</span>
+              </a>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-solar underline underline-offset-4"
+              >
+                <Instagram className="h-4 w-4 shrink-0" aria-hidden="true" />@{INSTAGRAM_HANDLE}
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
