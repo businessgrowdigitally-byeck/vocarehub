@@ -1,6 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 
-import { FEEDBACK_HOURLY_LIMIT, retentionCutoff, validateFeedback } from "./feedback";
+import {
+  FEEDBACK_ADMIN_LIST_LIMIT,
+  FEEDBACK_HOURLY_LIMIT,
+  retentionCutoff,
+  validateFeedback,
+} from "./feedback";
 
 export type FeedbackRow = {
   id: string;
@@ -13,6 +18,17 @@ export type FeedbackRow = {
 };
 
 export type SubmitResult = { ok: true } | { ok: false; error: string };
+
+type FeedbackClient = ReturnType<typeof import("./feedback.server").createFeedbackClient>;
+
+/** Retenção: roda a cada envio e a cada abertura do admin, sem depender só de um deles. */
+async function purgeExpired(supabase: FeedbackClient): Promise<void> {
+  const { error } = await supabase
+    .from("feedback")
+    .delete()
+    .lt("created_at", retentionCutoff(new Date()).toISOString());
+  if (error) console.error("[feedback] purge failed", error.message);
+}
 
 // Imports de servidor ficam dentro dos handlers: este arquivo também entra no bundle do
 // navegador, e lá só sobram as chamadas RPC.
@@ -37,6 +53,7 @@ export const submitFeedback = createServerFn({ method: "POST" })
       return { ok: false, error: "Muitas mensagens agora. Tente de novo mais tarde." };
     }
 
+    await purgeExpired(supabase);
     const { error } = await supabase.from("feedback").insert(result.value);
     if (error) {
       console.error("[feedback] insert failed", error.message);
@@ -100,16 +117,12 @@ export const adminListFeedback = createServerFn({ method: "GET" }).handler(
     }
     const { createFeedbackClient } = await import("./feedback.server");
     const supabase = createFeedbackClient();
-    // Retenção: apaga o que passou do prazo antes de listar.
-    await supabase
-      .from("feedback")
-      .delete()
-      .lt("created_at", retentionCutoff(new Date()).toISOString());
+    await purgeExpired(supabase);
     const { data, error } = await supabase
       .from("feedback")
       .select("id, created_at, kind, message, rating, page, read_at")
       .order("created_at", { ascending: false })
-      .limit(1000);
+      .limit(FEEDBACK_ADMIN_LIST_LIMIT);
     if (error) throw new Error(error.message);
     return { authorized: true, rows: data ?? [] };
   },

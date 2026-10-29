@@ -4,6 +4,7 @@ import { Download, LogOut, Star, Trash2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
+  FEEDBACK_ADMIN_LIST_LIMIT,
   FEEDBACK_KINDS,
   FEEDBACK_KIND_LABELS,
   feedbackToCsv,
@@ -206,6 +207,13 @@ export function AdminFeedbackPage() {
               </div>
             ))}
           </dl>
+
+          {rows.length >= FEEDBACK_ADMIN_LIST_LIMIT && (
+            <p className="mt-4 text-sm text-solar" role="status">
+              Mostrando só as {FEEDBACK_ADMIN_LIST_LIMIT} mensagens mais recentes (os números acima
+              também). Apague ou exporte as antigas para ver o restante.
+            </p>
+          )}
 
           <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Filtrar">
             {(["nao-lidos", "todos", ...FEEDBACK_KINDS] as Filter[]).map((option) => (

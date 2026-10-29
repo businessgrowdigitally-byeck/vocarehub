@@ -18,6 +18,8 @@ export const FEEDBACK_PAGE_MAX_LENGTH = 200;
 export const FEEDBACK_MIN_FILL_MS = 3000;
 /** Limite global de envios por hora, para um ataque de spam não lotar a tabela. */
 export const FEEDBACK_HOURLY_LIMIT = 200;
+/** O admin carrega no máximo esta quantidade (as mais recentes) de uma vez. */
+export const FEEDBACK_ADMIN_LIST_LIMIT = 1000;
 /** Feedbacks mais antigos que isso são apagados (dito na página de privacidade). */
 export const FEEDBACK_RETENTION_MONTHS = 12;
 
